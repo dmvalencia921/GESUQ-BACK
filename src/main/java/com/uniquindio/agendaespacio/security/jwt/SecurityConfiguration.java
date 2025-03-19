@@ -1,7 +1,6 @@
 package com.uniquindio.agendaespacio.security.jwt;
 
 import com.uniquindio.agendaespacio.service.imp.MyUserDetailsService;
-import com.uniquindio.agendaespacio.service.imp.RolService;
 import com.uniquindio.agendaespacio.service.imp.UsuarioService;
 import com.uniquindio.agendaespacio.util.constants.AutConstant;
 import io.jsonwebtoken.io.Decoders;
@@ -38,7 +37,6 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 public class SecurityConfiguration {
     private final MyUserDetailsService userDetailsService;
-    private final RolService rolService;
     private final UsuarioService usuarioService;
 
     @Bean

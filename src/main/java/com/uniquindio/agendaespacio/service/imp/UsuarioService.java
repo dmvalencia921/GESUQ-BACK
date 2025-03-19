@@ -44,6 +44,12 @@ public class UsuarioService implements IUsuarioService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "El usuario debe pertenecer al dominio @uniquidio.edu.co");
         }
+
+        if(usuario.isAdmin()){
+            usuarioCrear.setNombreRol(Constants.ADMIN_ROLE);
+        }else {
+            usuarioCrear.setNombreRol(Constants.USER_ROLE);
+        }
         usuarioCrear.setNombres(usuario.getNombres());
         usuarioCrear.setApellidos(usuario.getApellidos());
         usuarioCrear.setClave(passwordCifrado);
@@ -77,6 +83,11 @@ public class UsuarioService implements IUsuarioService {
                     usuarioRepository.findOneByUsuarioAndIdUsuarioNot(usuario.getUsuario(), usuario.getIdUsuario()))) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario ya existe");
             }
+        }
+        if(usuario.isAdmin()){
+            usuarioExite.get().setNombreRol(Constants.ADMIN_ROLE);
+        }else {
+            usuarioExite.get().setNombreRol(Constants.USER_ROLE);
         }
         String passwordCifrado = passwordEncoder.encode(usuario.getClave());
         usuarioExite.get().setNombres(usuario.getNombres());

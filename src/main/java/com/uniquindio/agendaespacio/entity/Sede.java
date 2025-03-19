@@ -1,6 +1,5 @@
 package com.uniquindio.agendaespacio.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -9,28 +8,22 @@ import java.util.Date;
 
 @Entity
 @Data
-public class Rol {
+public class Sede {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idRol;
+    private Integer idSede;
 
-    @Column(nullable = false, length =15 )
-    @NotEmpty(message = "El nombre del rol no puede ser nulo")
-    private String nombre;
+    @Column(nullable = false)
+    @NotEmpty(message = "El nombre de la sede no puede ser nulo")
+    private  String nombreSede;
 
-    @Column(nullable = false, length = 50)
-    @NotEmpty(message = "La descripcion del rol no puede ser nula")
-    private String descripcion;
+    @Column(nullable = false)
+    @NotEmpty(message = "La ubicacion de la sede no puede ser nula")
+    private String ubicacion;
 
-    @Column(name = "activo", columnDefinition = "boolean default true")
-    private Boolean activo = true;
 
-    @ManyToOne
-    @JsonIgnore
-    private Usuario usuario;
-
-    //-----------------> Auditoria <--------------------
+    //<------------------- Auditoria--------------------------->
     /**
      * Id del usuario que creo el registro.
      */
@@ -48,11 +41,10 @@ public class Rol {
      */
     @Column(name = "fecha_creacion", nullable = false, length = 30)
     private Date fechaCreacion = new Date();
+
     /**
      * Fecha de modificación del registro
      */
     @Column(name = "fecha_actualizacion", nullable = true, length = 30)
     private Date fechaModificacion;
-
-
 }

@@ -30,10 +30,7 @@ public class MyUserDetailsService implements UserDetailsService {
         }
 
         Usuario user = opUser;
-        // Obtener la lista de roles del usuario
-        List<GrantedAuthority> authorities = user.getListaRol().stream()
-                .map(usuarioRol -> new SimpleGrantedAuthority(usuarioRol.getNombre()))
-                .collect(Collectors.toList());
+       String authorities = user.getNombreRol();
 
         return User.builder()
                 .username(user.getUsuario())

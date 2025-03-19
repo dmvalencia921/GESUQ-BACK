@@ -47,10 +47,9 @@ public class AuthenticationService implements IAuthenticationService {
     @Override
     public UsuarioAuthorizationDto infoUsuario(String username) {
         Usuario usuarioExistente = usuarioService.buscarUsuarioPorUsuario(username);
-        List<String> roles = usuarioExistente.getListaRol().stream()
-                .map((usuarioRol) -> usuarioRol.getNombre()).collect(Collectors.toList());
+        String roles = usuarioExistente.getNombreRol();
 
-        boolean isAdmin = roles.contains(Constants.ADMIN_ROLE);
+        boolean isAdmin = roles.equals(Constants.ADMIN_ROLE);
 
         UsuarioAuthorizationDto usuarioResp = UsuarioAuthorizationDto.builder().username(username).roles(roles)
                 .id(usuarioExistente.getIdUsuario()).isAdmin(isAdmin).build();

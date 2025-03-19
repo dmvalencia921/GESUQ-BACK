@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 public class UsuarioAuthorizationDto {
     String username;
-    private List<String> roles;
+    private String roles;
     Integer id;
     Boolean isAdmin;
 }
