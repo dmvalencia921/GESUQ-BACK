@@ -1,54 +1,32 @@
 package com.uniquindio.agendaespacio.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
-public class Usuario {
+public class FacultadPrograma {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idUsuario;
+    private Integer idfacultadprograma;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Los nombres del usuario no puede ser nulo")
-    private String noDocumento;
+    private Integer idFacultad;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Los nombres del usuario no puede ser nulo")
-    private String nombres;
+    private String nombreFacultad;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Los apellidos del usuario no pueden ser nulos")
-    private String apellidos;
+    private String codPrograma;
 
     @Column(nullable = false)
-    @NotEmpty(message = "El usuario no puede ser nulo")
-    private String usuario;
-
-    @Column(nullable = false)
-    @NotEmpty(message = "La clave del usuario no puede ser nula")
-    private String clave;
-
-    @Column(columnDefinition = "boolean default true")
-    private boolean activo;
-
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
-    private boolean admin ;
-
-    @Column(nullable = false)
-    private String nombreRol;
-
-    @Column(nullable = true)
-    private String tokenRecuperacion;
+    private String nombrePrograma;
 
     //-----------------> Auditoria <--------------------
+
     /**
      * Id del usuario que creo el registro.
      */

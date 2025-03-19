@@ -5,50 +5,21 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
-public class Usuario {
+public class Facultad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idUsuario;
+    private Integer idFacultad;
 
     @Column(nullable = false)
-    @NotEmpty(message = "Los nombres del usuario no puede ser nulo")
-    private String noDocumento;
-
-    @Column(nullable = false)
-    @NotEmpty(message = "Los nombres del usuario no puede ser nulo")
-    private String nombres;
-
-    @Column(nullable = false)
-    @NotEmpty(message = "Los apellidos del usuario no pueden ser nulos")
-    private String apellidos;
-
-    @Column(nullable = false)
-    @NotEmpty(message = "El usuario no puede ser nulo")
-    private String usuario;
-
-    @Column(nullable = false)
-    @NotEmpty(message = "La clave del usuario no puede ser nula")
-    private String clave;
-
-    @Column(columnDefinition = "boolean default true")
-    private boolean activo;
-
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
-    private boolean admin ;
-
-    @Column(nullable = false)
-    private String nombreRol;
-
-    @Column(nullable = true)
-    private String tokenRecuperacion;
+    @NotEmpty(message = "El nombre de la facultad no puede ser nulo")
+    private  String nombreFacultad;
 
     //-----------------> Auditoria <--------------------
+
     /**
      * Id del usuario que creo el registro.
      */
