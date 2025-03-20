@@ -252,7 +252,7 @@ COPY public.programa (id_programa, cod_programa, fecha_creacion, fecha_actualiza
 --
 
 COPY public.sede (id_sede, fecha_creacion, fecha_actualizacion, id_usu_creacion, id_usu_actualizacion, nombre_sede, ubicacion) FROM stdin;
-1	2025-03-20 14:42:26.469	2025-03-20 14:42:26.469	string	string	sede manizales	manizales
+2	2025-03-20 16:21:51.728	2025-03-20 16:21:51.728	string	string	sede-manizales	manizales
 \.
 
 
@@ -298,7 +298,7 @@ SELECT pg_catalog.setval('public.programa_id_programa_seq', 1, false);
 -- Name: sede_id_sede_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.sede_id_sede_seq', 1, true);
+SELECT pg_catalog.setval('public.sede_id_sede_seq', 2, true);
 
 
 --
