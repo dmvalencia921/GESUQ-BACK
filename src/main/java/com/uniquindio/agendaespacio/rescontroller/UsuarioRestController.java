@@ -28,6 +28,12 @@ public class UsuarioRestController {
         return  ResponseEntity.ok(usuarioService.listarUsuarios());
     }
 
+    @GetMapping("/buscarPorUsuario/{usuario}")
+    @Operation(summary = "buscar por usuario", description = "Metodo encargado de buscar un usuario por su usuario")
+    public ResponseEntity<Usuario> buscarUsuarioPorUsuario(@PathVariable  String usuario) {
+        return ResponseEntity.ok(usuarioService.buscarUsuarioPorUsuario(usuario));
+    }
+
     @PutMapping("/actualizarUsuario")
     @Operation(summary = "actualizar usuario", description = "Metodo usado para actualizar usuario")
     public ResponseEntity<Usuario> actualizarUsuario(@RequestBody Usuario usuario) {

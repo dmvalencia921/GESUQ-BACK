@@ -17,7 +17,7 @@ exit /b
 echo Restaurando backup desde: %backup_file%
 
 :: Restaurar el backup en PostgreSQL dentro de Docker
-docker exec -i postgres_gasuq psql -U admin -d gasuq < "%backup_file%"
+docker exec -i postgres_gesuq psql -U admin -d gesuq < "%backup_file%"
 
 echo Restauración completada.
 pause

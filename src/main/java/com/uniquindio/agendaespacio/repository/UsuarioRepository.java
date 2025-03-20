@@ -13,6 +13,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
 
     Usuario findOneByUsuarioAndIdUsuarioNot(String usuario, Integer idUsuario);
-    Optional<Usuario>  findByUsuarioIgnoreCase(String usuario);
+
+    Optional<Usuario> findByUsuarioIgnoreCase(String usuario);
+
     Usuario findByUsuario(String usuario);
 }
