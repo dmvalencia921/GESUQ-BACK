@@ -1,6 +1,7 @@
 package com.uniquindio.agendaespacio.rescontroller;
 
 import com.uniquindio.agendaespacio.entity.Programa;
+import com.uniquindio.agendaespacio.entity.Usuario;
 import com.uniquindio.agendaespacio.service.imp.ProgramaService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class ProgramaRestController {
     public ResponseEntity<List<Programa>> listarProgramas() {
         return ResponseEntity.ok(programaService.listarProgramas());
     }
+
 
     @DeleteMapping("/eliminarPrograma/{idPrograma}")
     @Operation(summary = "eliminar programa", description = "Metodo para eliminar un programa por su id")
