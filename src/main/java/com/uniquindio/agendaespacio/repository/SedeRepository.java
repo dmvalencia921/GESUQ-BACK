@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface SedeRepository extends JpaRepository<Sede,Integer>  {
-    List<Sede>  findByNombreIgnoreCase(String nombre);
-    Sede findOneByNombreAndIdSedeNot(String nombre, Integer idSede);
+    List<Sede>  findByNombreSedeIgnoreCase(String nombre);
+    Sede findOneByNombreSedeAndIdSedeNot(String nombre, Integer idSede);
 }
