@@ -2,10 +2,10 @@ version: '3.8'
 services:
   db:
     image: postgres:latest
-    container_name: postgres_gasuq
+    container_name: postgres_gesuq
     restart: always
     environment:
-      POSTGRES_DB: gasuq
+      POSTGRES_DB: gesuq
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     ports:

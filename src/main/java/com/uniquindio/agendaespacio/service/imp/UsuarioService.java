@@ -50,6 +50,7 @@ public class UsuarioService implements IUsuarioService {
         }else {
             usuarioCrear.setNombreRol(Constants.USER_ROLE);
         }
+        usuarioCrear.setNoDocumento(usuario.getNoDocumento());
         usuarioCrear.setNombres(usuario.getNombres());
         usuarioCrear.setApellidos(usuario.getApellidos());
         usuarioCrear.setClave(passwordCifrado);
@@ -90,6 +91,7 @@ public class UsuarioService implements IUsuarioService {
             usuarioExite.get().setNombreRol(Constants.USER_ROLE);
         }
         String passwordCifrado = passwordEncoder.encode(usuario.getClave());
+        usuarioExite.get().setNoDocumento(usuario.getNoDocumento());
         usuarioExite.get().setNombres(usuario.getNombres());
         usuarioExite.get().setApellidos(usuario.getApellidos());
         usuarioExite.get().setUsuario(usuario.getUsuario());
