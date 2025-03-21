@@ -11,7 +11,7 @@ public class FacultadPrograma {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idfacultadprograma;
+    private Integer idFacultadPrograma;
 
     @Column(nullable = false)
     private Integer idFacultad;

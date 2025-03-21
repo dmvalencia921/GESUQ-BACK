@@ -19,6 +19,9 @@ public class EspacioAcademico {
     private String nombre;
 
     @Column(nullable = false)
+    private Integer semestre;
+
+    @Column(nullable = false)
     @NotEmpty(message = "La descripcion no puede ser nula")
     private String descripcion;
 

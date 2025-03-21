@@ -18,7 +18,7 @@ public class FacultadProgramaRestController {
 
     @PostMapping("/crearFacultaPrograma")
     @Operation(summary = "crear facultad programa", description = "Metodo usado para la creacion de facultad prorgama")
-    public ResponseEntity<List<FacultadPrograma>> crearFacultadPrograma(List<FacultadPrograma> listaFacultadPrograma) {
+    public ResponseEntity<List<FacultadPrograma>> crearFacultadPrograma(@RequestBody  List<FacultadPrograma> listaFacultadPrograma) {
         return ResponseEntity.ok(facultadProgramaService.crearFacultadPrograma(listaFacultadPrograma));
     }
 
