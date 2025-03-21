@@ -33,20 +33,25 @@ public class SedeService implements ISedeService {
      * @return la sede
      */
 
+    @Override
     public Sede crearSede(Sede sede) {
 
         log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearSede");
-        if (Validation.isNullOrEmpty(sedeRepository.findByNombreSedeIgnoreCase(sede.getNombreSede())))
+        if (Validation.isNullOrEmpty(sedeRepository.findByNombreSedeIgnoreCase(sede.getNombreSede()))){
             sede.setNombreSede(sede.getNombreSede());
             sede.setUbicacion(sede.getUbicacion());
             Sede newSede = sedeRepository.save(sede);
-            
+       
         if (!Validation.isNullOrEmpty(newSede)) {
             return newSede;
         }
-        log.error(Constants.MSN_FIN_LOG_INFO + classLog + "No se pudo crear la sede");
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La sede ya existe");
 
+        log.error(Constants.MSN_INICIO_LOG_INFO + classLog + "No se pudo crear la sede");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La sede ya existe");
+    }
+        
+    log.info(Constants.MSN_FIN_LOG_INFO+classLog+"Crear programa");
+    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El programa ya existe");
     }
 
     @Override
