@@ -1,6 +1,8 @@
 package com.uniquindio.agendaespacio.rescontroller;
 
+import com.uniquindio.agendaespacio.entity.Facultad;
 import com.uniquindio.agendaespacio.entity.FacultadPrograma;
+import com.uniquindio.agendaespacio.entity.Programa;
 import com.uniquindio.agendaespacio.service.imp.FacultadProgramaService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +33,22 @@ public class FacultadProgramaRestController {
     @GetMapping("/listarPorFacultad/{idFacultad}")
     @Operation(summary = "listar por id de facultad", description = "Metodo para listar por facultar programa")
     public ResponseEntity<List<FacultadPrograma>> listarFacultadProgramaPorFacultad(@PathVariable Integer idFacultad) {
-        return  ResponseEntity.ok(facultadProgramaService.listarFacultadProgramaPorFacultad(idFacultad));
+        Facultad facultad = new Facultad();
+        facultad.setIdFacultad(idFacultad);
+        return  ResponseEntity.ok(facultadProgramaService.listarFacultadProgramaPorFacultad(facultad));
     }
 
     @DeleteMapping("/eliminarFacultadPrograma/{codPrograma}")
     @Operation(summary = "eliminar facultad programa", description = "Metodo usado para eliminar una facultad programa por el cod programa")
     public void eliminarFacultadPrograma(@PathVariable String codPrograma) {
-        facultadProgramaService.eliminarFacultadPrograma(codPrograma);
+        Programa programa = new Programa();
+        programa.setCodPrograma(codPrograma);
+        facultadProgramaService.eliminarFacultadPrograma(programa);
+    }
+
+    @DeleteMapping("/eliminarFacultadProgramaporid/{idFacultadPrograma}")
+    @Operation(summary = "eliminar facultad programa", description = "Metodo usado para eliminar una facultad programa por el id ")
+    public void eliminarFacultadPrograma(@PathVariable Integer idFacultadPrograma) {
+        facultadProgramaService.eliminarFaculPrograma(idFacultadPrograma);
     }
 }

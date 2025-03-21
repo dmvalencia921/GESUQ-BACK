@@ -1,10 +1,14 @@
 package com.uniquindio.agendaespacio.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -18,6 +22,9 @@ public class Facultad {
     @NotEmpty(message = "El nombre de la facultad no puede ser nulo")
     private  String nombreFacultad;
 
+    @OneToMany(mappedBy = "facultad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<FacultadPrograma> listaFacultadProgramas = new HashSet<>();
     //-----------------> Auditoria <--------------------
 
     /**

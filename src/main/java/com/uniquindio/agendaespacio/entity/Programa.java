@@ -1,10 +1,13 @@
 package com.uniquindio.agendaespacio.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,6 +24,10 @@ public class Programa {
     @Column(nullable = false)
     @NotEmpty(message = "El codigo no puede ser nulo")
     private String codPrograma;
+
+    @OneToMany(mappedBy = "programa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<FacultadPrograma> listaFacultadProgramas = new HashSet<>();
 
     //-----------------> Auditoria <--------------------
 

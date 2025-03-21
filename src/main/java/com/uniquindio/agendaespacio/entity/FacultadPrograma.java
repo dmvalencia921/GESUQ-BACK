@@ -13,18 +13,13 @@ public class FacultadPrograma {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idFacultadPrograma;
 
-    @Column(nullable = false)
-    private Integer idFacultad;
+    @ManyToOne
+    @JoinColumn(name = "id_facultad", nullable = false)
+    private Facultad facultad;
 
-    @Column(nullable = false)
-    private String nombreFacultad;
-
-    @Column(nullable = false)
-    private String codPrograma;
-
-    @Column(nullable = false)
-    private String nombrePrograma;
-
+    @ManyToOne
+    @JoinColumn(name = "cod_programa",nullable = false)
+    private Programa programa;
     //-----------------> Auditoria <--------------------
 
     /**
