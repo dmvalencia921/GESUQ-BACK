@@ -40,7 +40,7 @@ public class Usuario {
     private boolean activo;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
-    private boolean admin ;
+    private boolean admin;
 
     @Column(nullable = false)
     private String nombreRol;

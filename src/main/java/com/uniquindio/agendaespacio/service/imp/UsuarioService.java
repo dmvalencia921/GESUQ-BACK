@@ -26,7 +26,6 @@ public class UsuarioService implements IUsuarioService {
 
     private final String classLog = getClass().getName() + '.';
 
-
     @Override
     public Usuario crearUsuario(Usuario usuario) {
         log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearUsuario");
@@ -45,17 +44,21 @@ public class UsuarioService implements IUsuarioService {
                     "El usuario debe pertenecer al dominio @uniquidio.edu.co");
         }
 
-        if(usuario.isAdmin()){
+        if (usuario.isAdmin()) {
             usuarioCrear.setNombreRol(Constants.ADMIN_ROLE);
-        }else {
+        } else {
             usuarioCrear.setNombreRol(Constants.USER_ROLE);
         }
+        usuarioCrear.setAdmin(usuario.isAdmin());
         usuarioCrear.setNoDocumento(usuario.getNoDocumento());
         usuarioCrear.setNombres(usuario.getNombres());
         usuarioCrear.setApellidos(usuario.getApellidos());
         usuarioCrear.setClave(passwordCifrado);
         usuarioCrear.setActivo(usuario.isActivo());
         usuarioCrear.setIdUsuarioCreacion(usuario.getIdUsuarioCreacion());
+
+        // Asigna el rol en función del valor de admin
+        usuarioCrear.setNombreRol(usuario.isAdmin() ? Constants.ADMIN_ROLE : Constants.USER_ROLE);
 
         Usuario usuarioCreado = usuarioRepository.save(usuarioCrear);
 
@@ -85,9 +88,9 @@ public class UsuarioService implements IUsuarioService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario ya existe");
             }
         }
-        if(usuario.isAdmin()){
+        if (usuario.isAdmin()) {
             usuarioExite.get().setNombreRol(Constants.ADMIN_ROLE);
-        }else {
+        } else {
             usuarioExite.get().setNombreRol(Constants.USER_ROLE);
         }
         String passwordCifrado = passwordEncoder.encode(usuario.getClave());
@@ -101,7 +104,6 @@ public class UsuarioService implements IUsuarioService {
         usuarioExite.get().setIdUsuarioModificacion(usuario.getIdUsuarioModificacion());
 
         Usuario usuarioCreado = usuarioRepository.save(usuarioExite.get());
-
 
         log.info(Constants.MSN_FIN_LOG_INFO + classLog + "actualizarUsuario");
         return usuarioCreado;

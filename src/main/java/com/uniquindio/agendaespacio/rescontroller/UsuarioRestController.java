@@ -19,6 +19,7 @@ public class UsuarioRestController {
     @PostMapping("/crearUsuario")
     @Operation(summary = "crear usuario" , description = "Metodo usado para crear ususario")
     public ResponseEntity<Usuario> crearUsuario(@RequestBody Usuario usuario) {
+        System.out.println("Usuario recibido: " + usuario);
         return  ResponseEntity.ok(usuarioService.crearUsuario(usuario));
     }
 

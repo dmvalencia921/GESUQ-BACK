@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -21,6 +25,10 @@ public class Sede {
     @Column(nullable = false)
     @NotEmpty(message = "La ubicacion de la sede no puede ser nula")
     private String ubicacion;
+
+     @OneToMany(mappedBy = "sede", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Grupo> listaGrupos = new HashSet<>();
 
 
     //<------------------- Auditoria--------------------------->
