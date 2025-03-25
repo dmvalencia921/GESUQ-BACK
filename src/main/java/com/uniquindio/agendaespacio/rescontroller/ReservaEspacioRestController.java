@@ -29,11 +29,11 @@ public class ReservaEspacioRestController {
         return ResponseEntity.ok(reservaEspacioService.listarReservas());
     }
 
-    @GetMapping("/listarReservaPorUsuario/{noDocumento}")
+    @GetMapping("/listarReservaPorUsuario/{idUsuario}")
     @Operation(summary = "listar por usuario", description = "Metodo que permite listar las reserva por usuario")
-    public ResponseEntity<List<ReservaEspacio>> listarReservaPorUsuario(@PathVariable String noDocumento) {
+    public ResponseEntity<List<ReservaEspacio>> listarReservaPorUsuario(@PathVariable Integer idUsuario) {
         Usuario usuario = new Usuario();
-        usuario.setNoDocumento(noDocumento);
+        usuario.setIdUsuario(idUsuario);
         return  ResponseEntity.ok(reservaEspacioService.listarReservaPorUsuario(usuario));
     }
 }
