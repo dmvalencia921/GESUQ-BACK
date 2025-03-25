@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -15,7 +14,7 @@ public class ReservaEspacio {
     private Integer idReservaEspacio;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean isOcupado;
+    private boolean ocupado = false;
 
     @Column(nullable = false)
     private Date fechaReservaEspacio;

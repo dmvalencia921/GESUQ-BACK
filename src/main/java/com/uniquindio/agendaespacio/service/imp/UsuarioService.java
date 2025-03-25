@@ -80,7 +80,6 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public Usuario actualizarUsuario(Usuario usuario) {
         log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "actualizarUsuario");
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Optional<Usuario> usuarioExite = usuarioRepository.findById(usuario.getIdUsuario());
         if (usuarioExite.isPresent()) {
             if (!Validation.isNullOrEmpty(
@@ -93,13 +92,12 @@ public class UsuarioService implements IUsuarioService {
         } else {
             usuarioExite.get().setNombreRol(Constants.USER_ROLE);
         }
-        String passwordCifrado = passwordEncoder.encode(usuario.getClave());
         usuarioExite.get().setNoDocumento(usuario.getNoDocumento());
         usuarioExite.get().setNombres(usuario.getNombres());
         usuarioExite.get().setApellidos(usuario.getApellidos());
         usuarioExite.get().setUsuario(usuario.getUsuario());
-        usuarioExite.get().setClave(passwordCifrado);
         usuarioExite.get().setActivo(usuario.isActivo());
+        usuarioExite.get().setAdmin(usuario.isAdmin());
         usuarioExite.get().setFechaModificacion(new Date());
         usuarioExite.get().setIdUsuarioModificacion(usuario.getIdUsuarioModificacion());
 
