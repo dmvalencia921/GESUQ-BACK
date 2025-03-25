@@ -1,5 +1,6 @@
 package com.uniquindio.agendaespacio.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -47,6 +48,10 @@ public class Usuario {
 
     @Column(nullable = true)
     private String tokenRecuperacion;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    Set<ReservaEspacio> listaReservaEspacios = new HashSet();
 
     //-----------------> Auditoria <--------------------
     /**

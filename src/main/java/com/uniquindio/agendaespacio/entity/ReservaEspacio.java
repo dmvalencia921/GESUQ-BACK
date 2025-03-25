@@ -1,40 +1,35 @@
 package com.uniquindio.agendaespacio.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
-public class EspacioAcademico {
+public class ReservaEspacio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idEspacioAcademico;
+    private Integer idReservaEspacio;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean isOcupado;
 
     @Column(nullable = false)
-    @NotEmpty(message = "El nombre del espacio académico no puede ser nulo")
-    private String nombre;
+    private Date fechaReservaEspacio;
 
     @Column(nullable = false)
-    private Integer semestre;
+    private String horario;
 
+    @ManyToOne
+    @JoinColumn(name = "id_espacio_academico", nullable = false)
+    private EspacioAcademico espacioAcademico;
 
-    //hora inicio y hora fin
-
-    @Column(nullable = false)
-    @NotEmpty(message = "La descripcion no puede ser nula")
-    private String descripcion;
-
-    @OneToMany(mappedBy = "espacioAcademico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<ReservaEspacio> listReservas = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
 
     //<------------------- Auditoria--------------------------->
     /**
@@ -60,4 +55,5 @@ public class EspacioAcademico {
      */
     @Column(name = "fecha_actualizacion", nullable = true, length = 30)
     private Date fechaModificacion;
+
 }
