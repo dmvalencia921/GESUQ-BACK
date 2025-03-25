@@ -22,6 +22,10 @@ private String nombreGrupo;
 @NotEmpty(message = "El semestre no puede ser nulo")
 private String semestre;
 
+@ManyToOne
+@JoinColumn(name = "cod_sede",nullable = false)
+private Sede sede;
+
 
 
 
