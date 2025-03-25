@@ -36,6 +36,7 @@ public class Usuario {
     @NotEmpty(message = "La clave del usuario no puede ser nula")
     private String clave;
 
+    //comit de prueba
     @Column(columnDefinition = "boolean default true")
     private boolean activo;
 
