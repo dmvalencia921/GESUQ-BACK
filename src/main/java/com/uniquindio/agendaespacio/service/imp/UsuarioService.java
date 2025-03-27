@@ -80,32 +80,44 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public Usuario actualizarUsuario(Usuario usuario) {
         log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "actualizarUsuario");
+    
         Optional<Usuario> usuarioExite = usuarioRepository.findById(usuario.getIdUsuario());
-        if (usuarioExite.isPresent()) {
-            if (!Validation.isNullOrEmpty(
-                    usuarioRepository.findOneByUsuarioAndIdUsuarioNot(usuario.getUsuario(), usuario.getIdUsuario()))) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario ya existe");
-            }
+        if (usuarioExite.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario no existe");
         }
-        if (usuario.isAdmin()) {
-            usuarioExite.get().setNombreRol(Constants.ADMIN_ROLE);
-        } else {
-            usuarioExite.get().setNombreRol(Constants.USER_ROLE);
+    
+        Usuario usuarioActualizar = usuarioExite.get();
+    
+        // Validar que el nuevo usuario no exista con otro ID
+        if (!Validation.isNullOrEmpty(usuarioRepository.findOneByUsuarioAndIdUsuarioNot(usuario.getUsuario(), usuario.getIdUsuario()))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario ya existe");
         }
-        usuarioExite.get().setNoDocumento(usuario.getNoDocumento());
-        usuarioExite.get().setNombres(usuario.getNombres());
-        usuarioExite.get().setApellidos(usuario.getApellidos());
-        usuarioExite.get().setUsuario(usuario.getUsuario());
-        usuarioExite.get().setActivo(usuario.isActivo());
-        usuarioExite.get().setAdmin(usuario.isAdmin());
-        usuarioExite.get().setFechaModificacion(new Date());
-        usuarioExite.get().setIdUsuarioModificacion(usuario.getIdUsuarioModificacion());
-
-        Usuario usuarioCreado = usuarioRepository.save(usuarioExite.get());
-
+    
+        usuarioActualizar.setNoDocumento(usuario.getNoDocumento());
+        usuarioActualizar.setNombres(usuario.getNombres());
+        usuarioActualizar.setApellidos(usuario.getApellidos());
+        usuarioActualizar.setUsuario(usuario.getUsuario());
+        usuarioActualizar.setActivo(usuario.isActivo());
+        usuarioActualizar.setAdmin(usuario.isAdmin());
+        usuarioActualizar.setFechaModificacion(new Date());
+        usuarioActualizar.setIdUsuarioModificacion(usuario.getIdUsuarioModificacion());
+    
+        // Asigna el rol basado en si es admin o no
+        usuarioActualizar.setNombreRol(usuario.isAdmin() ? Constants.ADMIN_ROLE : Constants.USER_ROLE);
+    
+        // Validar si la clave fue modificada
+        if (usuario.getClave() != null && !usuario.getClave().isBlank()) {
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String nuevaClaveCifrada = passwordEncoder.encode(usuario.getClave());
+            usuarioActualizar.setClave(nuevaClaveCifrada);
+        }
+    
+        Usuario usuarioActualizado = usuarioRepository.save(usuarioActualizar);
+    
         log.info(Constants.MSN_FIN_LOG_INFO + classLog + "actualizarUsuario");
-        return usuarioCreado;
+        return usuarioActualizado;
     }
+    
 
     @Override
     public Usuario buscarUsuarioPorUsuario(String usuario) {
