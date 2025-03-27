@@ -29,6 +29,11 @@ public class ReservaEspacioRestController {
         return ResponseEntity.ok(reservaEspacioService.listarReservas());
     }
 
+    @PutMapping("/actualiazarReserva")
+    @Operation(summary = "Actualizar reserva", description = "Metodo que me permite actualizar una reserva")
+    public ResponseEntity<ReservaEspacio> actualizarReservaEspacio(@RequestBody  ReservaEspacio reserva) {
+        return ResponseEntity.ok(reservaEspacioService.actualizarReserva( reserva));
+    }
     @GetMapping("/listarReservaPorUsuario/{idUsuario}")
     @Operation(summary = "listar por usuario", description = "Metodo que permite listar las reserva por usuario")
     public ResponseEntity<List<ReservaEspacio>> listarReservaPorUsuario(@PathVariable Integer idUsuario) {

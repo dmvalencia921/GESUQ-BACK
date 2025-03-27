@@ -1,9 +1,6 @@
 package com.uniquindio.agendaespacio.service.imp;
 
-import com.uniquindio.agendaespacio.entity.EspacioAcademico;
-import com.uniquindio.agendaespacio.entity.Facultad;
-import com.uniquindio.agendaespacio.entity.ReservaEspacio;
-import com.uniquindio.agendaespacio.entity.Usuario;
+import com.uniquindio.agendaespacio.entity.*;
 import com.uniquindio.agendaespacio.repository.ReservaEspacioRepository;
 import com.uniquindio.agendaespacio.service.IReservaEspacioService;
 import com.uniquindio.agendaespacio.util.constants.Constants;
@@ -17,6 +14,7 @@ import org.yaml.snakeyaml.scanner.Constant;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -53,11 +51,6 @@ public class ReservaEspacioService implements IReservaEspacioService {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"La reserva ya existe");
     }
 
-    @Override
-    public ReservaEspacio actualizarReserva(ReservaEspacio reserva) {
-        return null;
-    }
-
     /**
      * Metodo que permite listar las reservas de los espacios
      * @return lista de reservas
@@ -69,6 +62,21 @@ public class ReservaEspacioService implements IReservaEspacioService {
             return listaReserva;
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Lista de reserva esta vacia");
+    }
+
+    @Override
+    public ReservaEspacio actualizarReserva(ReservaEspacio reservaEspacio) {
+        log.info(Constants.MSN_INICIO_LOG_INFO+ classLog + "actualizarReserva");
+        ReservaEspacio reserva = espacioRepository.findOneByIdReservaEspacio(reservaEspacio.getIdReservaEspacio());
+        if(!Validation.isNullOrEmpty(reservaEspacio)){
+            reserva.setOcupado(reservaEspacio.isOcupado());
+            reserva.setFechaCreacion(new Date());
+            reserva.setIdUsuarioModificacion(reservaEspacio.getIdUsuarioModificacion());
+            espacioRepository.save(reserva);
+            return reserva;
+        }
+        log.info(Constants.MSN_INICIO_LOG_INFO+ classLog + "actualizarReserva");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"La reserva no existe");
     }
 
     /**
@@ -84,4 +92,18 @@ public class ReservaEspacioService implements IReservaEspacioService {
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Lista de reserva esta vacia");
     }
+
+    @Override
+    public void eliminarReserva(Integer idEspacioAcademico) {
+        log.info(Constants.MSN_INICIO_LOG_INFO+classLog+"eliminarReserva");
+        Optional<ReservaEspacio> lista = espacioRepository.findById(idEspacioAcademico);
+        if(lista.isEmpty()){
+            log.info(Constants.MSN_FIN_LOG_INFO+classLog+"eliminarReserva");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"La reserva no existe");
+        }
+        espacioRepository.deleteById(idEspacioAcademico);
+        log.info(Constants.MSN_FIN_LOG_INFO+classLog+"eliminarReserva");
+    }
+
+
 }

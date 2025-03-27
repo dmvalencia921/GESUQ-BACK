@@ -15,7 +15,10 @@ import java.util.List;
 public interface ReservaEspacioRepository extends JpaRepository<ReservaEspacio,Integer> {
 
     @Query("SELECT COUNT(r) > 0 FROM ReservaEspacio r WHERE r.espacioAcademico.idEspacioAcademico = :idEspacio AND r.fechaReservaEspacio = :fecha AND r.horario = :horario")
-    boolean existsByEspacioAndFechaAndHorario(@Param("idEspacio") Integer idEspacio,@Param("fecha") Date fecha, @Param("horario") String horario);
+    boolean existsByEspacioAndFechaAndHorario(@Param("idEspacio") Integer idEspacio, @Param("fecha") Date fecha, @Param("horario") String horario);
 
     List<ReservaEspacio> findByUsuario(Usuario usuario);
+
+    ReservaEspacio findOneByIdReservaEspacio(Integer id);
+
 }

@@ -8,7 +8,8 @@ import java.util.List;
 public interface IReservaEspacioService {
 
     ReservaEspacio crearReservaEspacio(ReservaEspacio reserva);
-    ReservaEspacio actualizarReserva(ReservaEspacio reserva);
     List<ReservaEspacio> listarReservas();
+    ReservaEspacio actualizarReserva(ReservaEspacio reserva);
     List<ReservaEspacio> listarReservaPorUsuario(Usuario usuario);
+    void eliminarReserva(Integer idEspacioAcademico);
 }
