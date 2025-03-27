@@ -29,7 +29,7 @@ public class ReservaEspacioRestController {
         return ResponseEntity.ok(reservaEspacioService.listarReservas());
     }
 
-    @PutMapping("/actualiazarReserva")
+    @PutMapping("/actualizarReserva")
     @Operation(summary = "Actualizar reserva", description = "Metodo que me permite actualizar una reserva")
     public ResponseEntity<ReservaEspacio> actualizarReservaEspacio(@RequestBody  ReservaEspacio reserva) {
         return ResponseEntity.ok(reservaEspacioService.actualizarReserva( reserva));
