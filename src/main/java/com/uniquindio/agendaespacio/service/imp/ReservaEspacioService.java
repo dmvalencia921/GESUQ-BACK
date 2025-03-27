@@ -73,6 +73,7 @@ public class ReservaEspacioService implements IReservaEspacioService {
             reserva.setFechaCreacion(new Date());
             reserva.setIdUsuarioModificacion(reservaEspacio.getIdUsuarioModificacion());
             espacioRepository.save(reserva);
+            eliminarReserva(reservaEspacio.getIdReservaEspacio());
             return reserva;
         }
         log.info(Constants.MSN_INICIO_LOG_INFO+ classLog + "actualizarReserva");
