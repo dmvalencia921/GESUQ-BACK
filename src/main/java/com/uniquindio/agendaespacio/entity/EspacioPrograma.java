@@ -1,35 +1,27 @@
 package com.uniquindio.agendaespacio.entity;
 
-import java.util.Date;
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+
+import java.util.Date;
 
 @Entity
 @Data
-public class Grupo {
+public class EspacioPrograma {
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Integer idGrupo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idEspacioPrograma;
 
-@Column(nullable = false)
-@NotEmpty(message = "El nombre del grupo no puede ser nulo")
-private String nombreGrupo;
+    @ManyToOne
+    @JoinColumn(name = "id_espacio_academico", nullable = false)
+    private EspacioAcademico espacioAcademico;
 
-@Column(nullable=false)
-@NotEmpty(message = "El semestre no puede ser nulo")
-private String semestre;
+    @ManyToOne
+    @JoinColumn(name = "cod_programa",nullable = false)
+    private Programa programa;
+    //-----------------> Auditoria <--------------------
 
-/* @ManyToOne
-@JoinColumn(name = "cod_sede",nullable = false)
-private Sede sede; */
-
-
-
-
-     //<------------------- Auditoria--------------------------->
     /**
      * Id del usuario que creo el registro.
      */
@@ -53,4 +45,5 @@ private Sede sede; */
      */
     @Column(name = "fecha_actualizacion", nullable = true, length = 30)
     private Date fechaModificacion;
+
 }
