@@ -35,7 +35,7 @@ public class EspacioAcademicoService implements IEspacioAcademicoService {
     @Override
     public EspacioAcademico crearEspacioAcademico(EspacioAcademico espacioAcademico) {
         log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearEspacioAcademico");
-        if (Validation.isNullOrEmpty(espacioAcademicoRepository.findByNombreIgnoreCaseAndSemestre(espacioAcademico.getNombre(), espacioAcademico.getSemestre()))) {
+        if (Validation.isNullOrEmpty(espacioAcademicoRepository.findByNombreIgnoreCase(espacioAcademico.getNombre()))) {
             espacioAcademico.setNombre(espacioAcademico.getNombre());
             espacioAcademico.setDescripcion(espacioAcademico.getDescripcion());
             espacioAcademico.setFechaCreacion(new Date());

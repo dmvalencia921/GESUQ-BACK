@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface EspacioAcademicoRepository extends JpaRepository<EspacioAcademico, Integer> {
-    List<EspacioAcademico> findByNombreIgnoreCaseAndSemestre(String nombre,Integer semestre);
+    List<EspacioAcademico> findByNombreIgnoreCase(String nombre);
     EspacioAcademico findOneByNombreAndIdEspacioAcademicoNot(String nombre, Integer idEspacio);
 }

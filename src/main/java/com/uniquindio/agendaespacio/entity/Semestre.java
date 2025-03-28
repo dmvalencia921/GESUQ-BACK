@@ -2,36 +2,25 @@ package com.uniquindio.agendaespacio.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Data
-public class EspacioAcademico {
+public class Semestre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idEspacioAcademico;
+    private Integer idSemestre;
 
-    @Column(nullable = false)
-    @NotEmpty(message = "El nombre del espacio académico no puede ser nulo")
-    private String nombre;
+    private Integer noSemestre;
 
-    @Column(nullable = false)
-    @NotEmpty(message = "La descripcion no puede ser nula")
     private String descripcion;
 
-    @OneToMany(mappedBy = "espacioAcademico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<ReservaEspacio> listReservas = new HashSet<>();
-
-
-    @OneToMany(mappedBy = "espacioAcademico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "semestre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     Set<EspacioSemestre> listaEspacioSemestre = new HashSet<>();
 
