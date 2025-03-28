@@ -1,34 +1,26 @@
 package com.uniquindio.agendaespacio.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
-public class Facultad {
+public class SedeFacultad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idFacultad;
+    private Integer idsedefacultad;
 
-    @Column(nullable = false)
-    @NotEmpty(message = "El nombre de la facultad no puede ser nulo")
-    private  String nombreFacultad;
+    @ManyToOne
+    @JoinColumn(name = "id_sede", nullable = false)
+    private Sede sede;
 
-    @OneToMany(mappedBy = "facultad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<FacultadPrograma> listaFacultadProgramas = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "id_facultad")
+    private Facultad facultad;
 
-    @OneToMany(mappedBy = "facultad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<SedeFacultad> listaSedeFacultades = new HashSet<>();
     //-----------------> Auditoria <--------------------
 
     /**

@@ -30,7 +30,9 @@ public class Sede {
     @JsonIgnore
     private Set<Grupo> listaGrupos = new HashSet<>(); */
 
-
+    @OneToMany(mappedBy = "sede", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<SedeFacultad> listaSedeFacultades = new HashSet<>();
     //<------------------- Auditoria--------------------------->
     /**
      * Id del usuario que creo el registro.
