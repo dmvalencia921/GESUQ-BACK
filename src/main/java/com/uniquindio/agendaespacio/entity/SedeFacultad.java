@@ -1,39 +1,28 @@
 package com.uniquindio.agendaespacio.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
-public class Sede {
+public class SedeFacultad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idSede;
+    private Integer idsedefacultad;
 
-    @Column(nullable = false)
-    @NotEmpty(message = "El nombre de la sede no puede ser nulo")
-    private  String nombreSede;
+    @ManyToOne
+    @JoinColumn(name = "id_sede", nullable = false)
+    private Sede sede;
 
-    @Column(nullable = false)
-    @NotEmpty(message = "La ubicacion de la sede no puede ser nula")
-    private String ubicacion;
+    @ManyToOne
+    @JoinColumn(name = "id_facultad")
+    private Facultad facultad;
 
-     @OneToMany(mappedBy = "sede", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Grupo> listaGrupos = new HashSet<>();
+    //-----------------> Auditoria <--------------------
 
-    @OneToMany(mappedBy = "sede", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<SedeFacultad> listaSedeFacultades = new HashSet<>();
-    //<------------------- Auditoria--------------------------->
     /**
      * Id del usuario que creo el registro.
      */
