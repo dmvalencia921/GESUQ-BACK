@@ -86,7 +86,7 @@ public class FacultadProgramaService implements IFacultadProgramaService {
         Optional<FacultadPrograma> lista = facultadProgramaRespository.findByPrograma(programa);
         if (lista.isEmpty()) {
             log.info(Constants.MSN_FIN_LOG_INFO + classLog + "eliminarFacultadSolicitante");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "la facultad solicitante no exite");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La facultad programa no exite");
         }
         facultadProgramaRespository.delete(lista.get());
         log.info(Constants.MSN_FIN_LOG_INFO + classLog + "eliminarFacultadSolicitante");
@@ -98,7 +98,7 @@ public class FacultadProgramaService implements IFacultadProgramaService {
         Optional<FacultadPrograma> lista = facultadProgramaRespository.findById(idFacultadPrograma);
         if (lista.isEmpty()) {
             log.info(Constants.MSN_FIN_LOG_INFO + classLog + "eliminarFacultadSolicitante");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "la facultad solicitante no exite");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La facultad programa no exite");
         }
         facultadProgramaRespository.deleteById(idFacultadPrograma);
         log.info(Constants.MSN_FIN_LOG_INFO + classLog + "eliminarFaculPrograma");
