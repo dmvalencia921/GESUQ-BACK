@@ -1,7 +1,6 @@
 package com.uniquindio.agendaespacio.service.imp;
 
 import com.uniquindio.agendaespacio.entity.Facultad;
-import com.uniquindio.agendaespacio.entity.Sede;
 import com.uniquindio.agendaespacio.entity.SedeFacultad;
 import com.uniquindio.agendaespacio.repository.SedeFacultadRepository;
 import com.uniquindio.agendaespacio.service.ISedeFacultadService;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j

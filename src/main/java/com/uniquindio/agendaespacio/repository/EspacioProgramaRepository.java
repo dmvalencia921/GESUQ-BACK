@@ -15,6 +15,4 @@ public interface EspacioProgramaRepository extends JpaRepository<EspacioPrograma
     List<EspacioPrograma> findByPrograma(Programa programa);
     Optional<EspacioPrograma>findByEspacioAcademico(EspacioAcademico espacio);
 
-
-
 }
