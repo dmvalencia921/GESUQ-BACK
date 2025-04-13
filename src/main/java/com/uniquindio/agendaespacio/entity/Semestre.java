@@ -24,7 +24,11 @@ public class Semestre {
     @JsonIgnore
     Set<EspacioSemestre> listaEspacioSemestre = new HashSet<>();
 
-    //<------------------- Auditoria--------------------------->
+    @OneToMany(mappedBy = "semestre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Grupo> grupos = new HashSet<>();
+
+    // <------------------- Auditoria--------------------------->
     /**
      * Id del usuario que creo el registro.
      */

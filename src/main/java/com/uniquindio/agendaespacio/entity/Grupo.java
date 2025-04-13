@@ -18,9 +18,9 @@ private Integer idGrupo;
 @NotEmpty(message = "El nombre del grupo no puede ser nulo")
 private String nombreGrupo;
 
-@Column(nullable=false)
-@NotEmpty(message = "El semestre no puede ser nulo")
-private String semestre;
+@ManyToOne
+@JoinColumn(name = "idSemestre", nullable = false)
+private Semestre semestre;
 
 /* @ManyToOne
 @JoinColumn(name = "cod_sede",nullable = false)
