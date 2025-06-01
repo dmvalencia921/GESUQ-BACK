@@ -1,44 +1,42 @@
 package com.uniquindio.agendaespacio.entity;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
+
+
+import java.util.Date;
+
 
 @Entity
 @Data
-public class Grupo {
+public class GrupoRelacion {
 
 @Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Integer idGrupo;
-
-@Column(nullable = false)
-@NotEmpty(message = "El nombre del grupo no puede ser nulo")
-private String nombreGrupo;
+@GeneratedValue(strategy =GenerationType.IDENTITY)    
+private Integer idGrupoRelacion;
 
 @ManyToOne
-@JoinColumn(name = "idSemestre", nullable = false)
-private Semestre semestre;
+@JoinColumn(name = "id_grupo",nullable = false)
+private Grupo grupo;
 
-@OneToMany(mappedBy = "grupo",cascade = CascadeType.ALL,fetch =FetchType.LAZY)
-@JsonIgnore
-Set<GrupoRelacion>listaGrupoRelacion=new HashSet<>();
+@ManyToOne
+@JoinColumn(name = "id_facultad",nullable = false)
+private Facultad facultad;
 
-/* @ManyToOne
-@JoinColumn(name = "cod_sede",nullable = false)
-private Sede sede; */
+@ManyToOne
+@JoinColumn(name="id_sede",nullable = false)
+private Sede sede;
+
+@ManyToOne
+@JoinColumn(name="id_espacio_academico",nullable = false)
+private EspacioAcademico espacioAcademico;
 
 
+ //<------------------- Auditoria--------------------------->
 
-
-     //<------------------- Auditoria--------------------------->
-    /**
+  /**
      * Id del usuario que creo el registro.
      */
     @Column(name = "id_usu_creacion", nullable = false, length = 15)
@@ -61,4 +59,5 @@ private Sede sede; */
      */
     @Column(name = "fecha_actualizacion", nullable = true, length = 30)
     private Date fechaModificacion;
+
 }

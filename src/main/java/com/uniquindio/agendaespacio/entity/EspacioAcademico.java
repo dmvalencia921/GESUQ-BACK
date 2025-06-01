@@ -35,6 +35,11 @@ public class EspacioAcademico {
     @JsonIgnore
     Set<EspacioSemestre> listaEspacioSemestre = new HashSet<>();
 
+
+    @OneToMany(mappedBy = "espacioAcademico",cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+    @JsonIgnore
+    Set<GrupoRelacion> listaGrupoRelacion = new HashSet<>();
+
     //<------------------- Auditoria--------------------------->
     /**
      * Id del usuario que creo el registro.

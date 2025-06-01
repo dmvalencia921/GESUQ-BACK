@@ -26,13 +26,14 @@ public class Sede {
     @NotEmpty(message = "La ubicacion de la sede no puede ser nula")
     private String ubicacion;
 
-/*      @OneToMany(mappedBy = "sede", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Grupo> listaGrupos = new HashSet<>(); */
 
     @OneToMany(mappedBy = "sede", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<SedeFacultad> listaSedeFacultades = new HashSet<>();
+
+    @OneToMany(mappedBy = "sede",cascade =CascadeType.ALL,fetch=FetchType.LAZY)
+    @JsonIgnore
+    private Set<GrupoRelacion>listaGrupoRelacion=new HashSet<>();
     //<------------------- Auditoria--------------------------->
     /**
      * Id del usuario que creo el registro.

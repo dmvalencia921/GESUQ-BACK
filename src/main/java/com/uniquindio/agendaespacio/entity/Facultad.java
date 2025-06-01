@@ -29,6 +29,10 @@ public class Facultad {
     @OneToMany(mappedBy = "facultad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<SedeFacultad> listaSedeFacultades = new HashSet<>();
+
+    @OneToMany(mappedBy = "facultad",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<GrupoRelacion> listaGrupoRelacion = new HashSet<>();
     //-----------------> Auditoria <--------------------
 
     /**
