@@ -26,9 +26,9 @@ private String nombreGrupo;
 @JoinColumn(name = "idSemestre", nullable = false)
 private Semestre semestre;
 
-@OneToMany(mappedBy = "grupo",cascade = CascadeType.ALL,fetch =FetchType.LAZY)
+/* @OneToMany(mappedBy = "grupo",cascade = CascadeType.ALL,fetch =FetchType.LAZY)
 @JsonIgnore
-Set<GrupoRelacion>listaGrupoRelacion=new HashSet<>();
+Set<GrupoRelacion>listaGrupoRelacion=new HashSet<>(); */
 
 /* @ManyToOne
 @JoinColumn(name = "cod_sede",nullable = false)

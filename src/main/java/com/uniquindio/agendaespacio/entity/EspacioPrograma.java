@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -18,9 +22,13 @@ public class EspacioPrograma {
     private EspacioAcademico espacioAcademico;
 
     @ManyToOne
-    @JoinColumn(name = "cod_programa",nullable = false)
+    @JoinColumn(name = "cod_programa", nullable = false)
     private Programa programa;
-    //-----------------> Auditoria <--------------------
+
+    @OneToMany(mappedBy = "espacioPrograma",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<GrupoRelacion> listaGrupoRelacion = new HashSet<>();
+    // ----------------f-> Auditoria <--------------------
 
     /**
      * Id del usuario que creo el registro.

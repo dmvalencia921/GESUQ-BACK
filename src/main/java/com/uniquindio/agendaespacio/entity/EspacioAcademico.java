@@ -36,9 +36,9 @@ public class EspacioAcademico {
     Set<EspacioSemestre> listaEspacioSemestre = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "espacioAcademico",cascade = CascadeType.ALL,fetch=FetchType.LAZY)
+  /*@OneToMany(mappedBy = "espacioAcademico",cascade = CascadeType.ALL,fetch=FetchType.LAZY)
     @JsonIgnore
-    Set<GrupoRelacion> listaGrupoRelacion = new HashSet<>();
+    Set<GrupoRelacion> listaGrupoRelacion = new HashSet<>(); */
 
     //<------------------- Auditoria--------------------------->
     /**
