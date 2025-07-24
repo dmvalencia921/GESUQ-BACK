@@ -1,7 +1,9 @@
 package com.uniquindio.agendaespacio.service.imp;
 
 import com.uniquindio.agendaespacio.entity.*;
+import com.uniquindio.agendaespacio.repository.EspacioAcademicoRepository;
 import com.uniquindio.agendaespacio.repository.EspacioProgramaRepository;
+import com.uniquindio.agendaespacio.repository.ProgramaRepository;
 import com.uniquindio.agendaespacio.service.IEspacioProgramaService;
 import com.uniquindio.agendaespacio.util.constants.Constants;
 import com.uniquindio.agendaespacio.util.utilities.Validation;
@@ -21,7 +23,59 @@ public class EspacioProgramaService implements IEspacioProgramaService {
     @Autowired
     private EspacioProgramaRepository espacioProgramaRepository;
 
+    @Autowired
+    private ProgramaRepository programaRepository;
+
+    @Autowired
+    private EspacioAcademicoRepository espacioAcademicoRepository;
+
     private final String classLog = getClass().getName() + '.';
+
+    /*
+     * @Override
+     * public List<EspacioPrograma> crearEspacioPrograma(List<EspacioPrograma>
+     * listaEp) {
+     * log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearFacultadPrograma");
+     * 
+     * if (listaEp.isEmpty()) {
+     * log.
+     * warn("La lista de programas está vacía, no se realizará ninguna operación.");
+     * return new ArrayList<>();
+     * }
+     * 
+     * 
+     * // Asumimos que todos van a tener la misma facultad
+     * 
+     * 
+     * Programa programa = listaEp.get(0).getPrograma();
+     * 
+     * // Obtener los programas existentes en la BD para ese programa
+     * List<EspacioPrograma> listaBD =
+     * espacioProgramaRepository.findByPrograma(programa);
+     * 
+     * Set<Integer> IdExistentes = listaBD.stream()
+     * .map(fp -> fp.getEspacioAcademico().getIdEspacioAcademico())
+     * .collect(Collectors.toSet());
+     * 
+     * // Filtrar espacios académicos nuevos (que no existen en la BD)
+     * List<EspacioPrograma> nuevosRegistros = listaEp.stream()
+     * .filter(fp ->
+     * !IdExistentes.contains(fp.getEspacioAcademico().getIdEspacioAcademico()))
+     * .peek(fp -> {
+     * fp.setPrograma(programa); // Asegurar que todos tengan el mismo programa
+     * fp.setFechaCreacion(new Date());
+     * })
+     * .collect(Collectors.toList());
+     * 
+     * // Guardar nuevos registros en la base de datos
+     * List<EspacioPrograma> programasGuardados =
+     * espacioProgramaRepository.saveAll(nuevosRegistros);
+     * log.info(Constants.MSN_FIN_LOG_INFO + classLog +
+     * "crearFacultadPrograma - Registros guardados: "
+     * + programasGuardados.size());
+     * return programasGuardados;
+     * }
+     */
 
     @Override
     public List<EspacioPrograma> crearEspacioPrograma(List<EspacioPrograma> listaEp) {
@@ -31,33 +85,56 @@ public class EspacioProgramaService implements IEspacioProgramaService {
             log.warn("La lista de programas está vacía, no se realizará ninguna operación.");
             return new ArrayList<>();
         }
+        List<EspacioPrograma> nuevosRegistros = new ArrayList<>();
 
-        /**
-         * Asumimos que todos van a tener la misma facultad
-         */
+        for (EspacioPrograma fp : listaEp) {
+            if (fp.getEspacioAcademico() == null || fp.getPrograma() == null) {
+                log.warn("Registro con espacio o programa nulo, se omite: {}", fp);
+                continue;
+            }
+            Integer idEspacio = fp.getEspacioAcademico().getIdEspacioAcademico();
+            Integer idPrograma = fp.getPrograma().getIdPrograma();
 
-        Programa programa = listaEp.get(0).getPrograma();
+            // Obtener espacio y programa persistidos
+            EspacioAcademico espacio = espacioAcademicoRepository.findById(idEspacio)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Espacio no encontrado: " + idEspacio));
 
-        // Obtener los programas existentes en la BD para ese programa
-        List<EspacioPrograma> listaBD = espacioProgramaRepository.findByPrograma(programa);
+            Programa programa = programaRepository.findById(idPrograma)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Programa no encontrado: " + idPrograma));
 
-        Set<Integer> IdExistentes = listaBD.stream()
-                .map(fp -> fp.getEspacioAcademico().getIdEspacioAcademico())
-                .collect(Collectors.toSet());
+            // Verificar si ya existe la combinación
+            /*
+             * List<EspacioPrograma> existentes =
+             * espacioProgramaRepository.findByPrograma(programa);
+             * if (!existentes.isEmpty()) {
+             * continue; // ya existe, no lo volvemos a guardar
+             * }
+             * 
+             * 
+             */
 
-        // Filtrar espacios académicos nuevos (que no existen en la BD)
-        List<EspacioPrograma> nuevosRegistros = listaEp.stream()
-                .filter(fp -> !IdExistentes.contains(fp.getEspacioAcademico().getIdEspacioAcademico()))
-                .peek(fp -> {
-                    fp.setPrograma(programa); // Asegurar que todos tengan el mismo programa
-                    fp.setFechaCreacion(new Date());
-                })
-                .collect(Collectors.toList());
+            boolean existentes = espacioProgramaRepository.existsByEspacioAcademicoAndPrograma(espacio, programa);
+            if (existentes) {
+                log.info("Ya existe el espacio-programa con Espacio {} y Programa {}, se omite", idEspacio, idPrograma);
+                continue;
+            }
+            // Asignar entidades persistidas
+            fp.setEspacioAcademico(espacio);
+            fp.setPrograma(programa);
+            fp.setFechaCreacion(new Date());
 
-        // Guardar nuevos registros en la base de datos
-        List<EspacioPrograma> programasGuardados = espacioProgramaRepository.saveAll(nuevosRegistros);
-        log.info(Constants.MSN_FIN_LOG_INFO + classLog + "crearFacultadPrograma - Registros guardados: " + programasGuardados.size());
-        return programasGuardados;
+            nuevosRegistros.add(fp);
+        }
+
+        List<EspacioPrograma> guardados = espacioProgramaRepository.saveAll(
+                nuevosRegistros);
+        log.info("EspacioPrograma guardados: {}", guardados);
+        log.info(Constants.MSN_FIN_LOG_INFO + classLog + "crearEspacioPrograma - Registros guardados: "
+                + guardados.size());
+
+        return guardados;
     }
 
     @Override
@@ -75,7 +152,8 @@ public class EspacioProgramaService implements IEspacioProgramaService {
         if (!Validation.isNullOrEmpty(epList)) {
             return epList;
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "lista facultad programa  esta vacia porque no hay con ese codigo de facultad");
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                "lista facultad programa  esta vacia porque no hay con ese codigo de facultad");
     }
 
     @Override

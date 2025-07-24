@@ -10,7 +10,7 @@ public interface IGrupoRelacionService {
 GrupoRelacion crearGrupoRelacion(GrupoRelacion grupoRelacion);
 List<GrupoRelacion>listarGrupoRelacion();
 void eliminarGrupoRelacion(Integer idGrupoRelacion);
-void eliminarGrupoRelacionporGrupo(Grupo grupo);
+/* void eliminarGrupoRelacionporGrupo(Grupo grupo); */
 
 
 

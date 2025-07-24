@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface EspacioProgramaRepository extends JpaRepository<EspacioPrograma, Integer> {
 
+    boolean existsByEspacioAcademicoAndPrograma(EspacioAcademico espacio, Programa programa);
     List<EspacioPrograma> findByPrograma(Programa programa);
     Optional<EspacioPrograma>findByEspacioAcademico(EspacioAcademico espacio);
 

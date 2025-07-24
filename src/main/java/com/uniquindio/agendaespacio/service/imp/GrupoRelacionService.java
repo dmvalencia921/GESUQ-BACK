@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.uniquindio.agendaespacio.entity.EspacioPrograma;
 import com.uniquindio.agendaespacio.entity.Grupo;
 import com.uniquindio.agendaespacio.entity.GrupoRelacion;
 import com.uniquindio.agendaespacio.repository.GrupoRelacionRepository;
@@ -28,25 +29,59 @@ public class GrupoRelacionService implements IGrupoRelacionService {
 
     private final String classLog = getClass().getName() + '.';
 
+    /*
+     * @Override
+     * public GrupoRelacion crearGrupoRelacion(GrupoRelacion grupoRelacion) {
+     * 
+     * log.info(Constants.MSN_INICIO_LOG_INFO, classLog + "crearGrupoRelacion");
+     * Optional<GrupoRelacion> grupoRelacionExiste = grupoRelacionRepository
+     * .findByGrupoAndSedeAndEspacioAcademicoAndFacultad(grupoRelacion.getGrupo(),
+     * grupoRelacion.getSede(),
+     * grupoRelacion.getEspacioAcademico(), grupoRelacion.getFacultad());
+     * if (grupoRelacionExiste.isPresent()) {
+     * throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+     * "El grupo relacion ya existe");
+     * }
+     * GrupoRelacion newGrupoRelacion = new GrupoRelacion();
+     * 
+     * newGrupoRelacion.setGrupo(grupoRelacion.getGrupo());
+     * newGrupoRelacion.setSede(grupoRelacion.getSede());
+     * newGrupoRelacion.setEspacioAcademico(grupoRelacion.getEspacioAcademico());
+     * newGrupoRelacion.setFacultad(grupoRelacion.getFacultad());
+     * 
+     * return grupoRelacionRepository.save(grupoRelacion);
+     * 
+     * }
+     * 
+     */
     @Override
     public GrupoRelacion crearGrupoRelacion(GrupoRelacion grupoRelacion) {
 
         log.info(Constants.MSN_INICIO_LOG_INFO, classLog + "crearGrupoRelacion");
+
+        // Extraemos un EspacioPrograma (el primero)
+        EspacioPrograma espacioPrograma = grupoRelacion.getEspacioPrograma();
+        if (espacioPrograma == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Espacio programa no puede ser nulo");
+        }
+
+        // Verificamos si ya existe la relación
         Optional<GrupoRelacion> grupoRelacionExiste = grupoRelacionRepository
-                .findByGrupoAndSedeAndEspacioAcademicoAndFacultad(grupoRelacion.getGrupo(), grupoRelacion.getSede(),
-                        grupoRelacion.getEspacioAcademico(), grupoRelacion.getFacultad());
+                .findBySedeAndFacultadAndEspacioPrograma(grupoRelacion.getSede(), grupoRelacion.getFacultad(),
+                        espacioPrograma);
+
         if (grupoRelacionExiste.isPresent()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El grupo relacion ya existe");
         }
-        GrupoRelacion newGrupoRelacion = new GrupoRelacion();
 
-        newGrupoRelacion.setGrupo(grupoRelacion.getGrupo());
-        newGrupoRelacion.setSede(grupoRelacion.getSede());
-        newGrupoRelacion.setEspacioAcademico(grupoRelacion.getEspacioAcademico());
-        newGrupoRelacion.setFacultad(grupoRelacion.getFacultad());
+        // Guardamos el nuevo grupoRelacion (se propagan los espacioProgramas por
+        // cascada)
+        GrupoRelacion nuevoGrupoRelacion = new GrupoRelacion();
+        nuevoGrupoRelacion.setSede(grupoRelacion.getSede());
+        nuevoGrupoRelacion.setFacultad(grupoRelacion.getFacultad());
+        nuevoGrupoRelacion.setEspacioPrograma(grupoRelacion.getEspacioPrograma());
 
-         return grupoRelacionRepository.save(grupoRelacion);
-
+        return grupoRelacionRepository.save(nuevoGrupoRelacion);
     }
 
     @Override
@@ -72,17 +107,23 @@ public class GrupoRelacionService implements IGrupoRelacionService {
         grupoRelacionRepository.deleteById(idGrupoRelacion);
     }
 
-    @Override
-    public void eliminarGrupoRelacionporGrupo(Grupo grupo) {
-
-        log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "eliminarGrupoRelacionporGrupo");
-        Optional<GrupoRelacion> lista = grupoRelacionRepository.findByGrupo(grupo);
-        if (lista.isEmpty()) {
-            log.info(Constants.MSN_FIN_LOG_INFO + classLog + "eliminarGrupoRelacionporGrupo");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "el grupo relacion no existe");
-        }
-        grupoRelacionRepository.delete(lista.get());
-        log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "eliminarGrupoRelacionporGrupo");
-    }
+    /*
+     * @Override
+     * public void eliminarGrupoRelacionporGrupo(Grupo grupo) {
+     * 
+     * log.info(Constants.MSN_INICIO_LOG_INFO + classLog +
+     * "eliminarGrupoRelacionporGrupo");
+     * Optional<GrupoRelacion> lista = grupoRelacionRepository.findByGrupo(grupo);
+     * if (lista.isEmpty()) {
+     * log.info(Constants.MSN_FIN_LOG_INFO + classLog +
+     * "eliminarGrupoRelacionporGrupo");
+     * throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+     * "el grupo relacion no existe");
+     * }
+     * grupoRelacionRepository.delete(lista.get());
+     * log.info(Constants.MSN_INICIO_LOG_INFO + classLog +
+     * "eliminarGrupoRelacionporGrupo");
+     * }
+     */
 
 }
