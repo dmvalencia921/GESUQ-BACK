@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -16,13 +13,6 @@ public class GrupoRelacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idGrupoRelacion;
-
-    /*
-     * @ManyToOne
-     * 
-     * @JoinColumn(name = "id_grupo",nullable = false)
-     * private Grupo grupo;
-     */
 
     @ManyToOne
     @JoinColumn(name = "id_facultad", nullable = false)
