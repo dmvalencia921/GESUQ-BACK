@@ -74,12 +74,12 @@ public class GrupoRelacionService implements IGrupoRelacionService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El grupo relacion ya existe");
         }
 
-        // Guardamos el nuevo grupoRelacion (se propagan los espacioProgramas por
-        // cascada)
+        
         GrupoRelacion nuevoGrupoRelacion = new GrupoRelacion();
         nuevoGrupoRelacion.setSede(grupoRelacion.getSede());
         nuevoGrupoRelacion.setFacultad(grupoRelacion.getFacultad());
         nuevoGrupoRelacion.setEspacioPrograma(grupoRelacion.getEspacioPrograma());
+        nuevoGrupoRelacion.setIdUsuarioCreacion(grupoRelacion.getIdUsuarioCreacion());
 
         return grupoRelacionRepository.save(nuevoGrupoRelacion);
     }
