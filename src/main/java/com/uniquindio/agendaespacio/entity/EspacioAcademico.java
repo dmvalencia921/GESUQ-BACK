@@ -7,7 +7,6 @@ import lombok.Data;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,10 +24,10 @@ public class EspacioAcademico {
     @Column(nullable = false)
     @NotEmpty(message = "La descripcion no puede ser nula")
     private String descripcion;
-
+/* 
     @OneToMany(mappedBy = "espacioAcademico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<ReservaEspacio> listReservas = new HashSet<>();
+    private Set<ReservaEspacio> listReservas = new HashSet<>(); */
 
 
     @OneToMany(mappedBy = "espacioAcademico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

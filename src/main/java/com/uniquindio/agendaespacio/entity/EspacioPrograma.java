@@ -28,6 +28,7 @@ public class EspacioPrograma {
     @OneToMany(mappedBy = "espacioPrograma",cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<GrupoRelacion> listaGrupoRelacion = new HashSet<>();
+    
     // ----------------f-> Auditoria <--------------------
 
     /**

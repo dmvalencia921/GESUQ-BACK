@@ -22,15 +22,22 @@ public class ReservaEspacio {
     @Column(nullable = false)
     private String horario;
 
+    /*
+     * @ManyToOne
+     * 
+     * @JoinColumn(name = "id_espacio_academico", nullable = false)
+     * private EspacioAcademico espacioAcademico;
+     */
+
     @ManyToOne
-    @JoinColumn(name = "id_espacio_academico", nullable = false)
-    private EspacioAcademico espacioAcademico;
+    @JoinColumn(name = "id_grupo_relacion", nullable = false)
+    private GrupoRelacion grupoRelacion;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    //<------------------- Auditoria--------------------------->
+    // <------------------- Auditoria--------------------------->
     /**
      * Id del usuario que creo el registro.
      */

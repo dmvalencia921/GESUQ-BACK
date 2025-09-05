@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -25,16 +28,10 @@ public class GrupoRelacion {
     @ManyToOne
     @JoinColumn(name = "id_espacio", nullable = false)
     private EspacioPrograma espacioPrograma;
-   
 
-
-
-    /*
-     * @ManyToOne
-     * 
-     * @JoinColumn(name="id_espacio_academico",nullable = false)
-     * private EspacioAcademico espacioAcademico;
-     */
+    @OneToMany(mappedBy = "grupoRelacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<ReservaEspacio> listReservaEspacios = new HashSet<>();
 
     // <------------------- Auditoria--------------------------->
 
