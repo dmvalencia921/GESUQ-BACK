@@ -41,4 +41,10 @@ public class ProgramaRestController {
     public void eliminarPrograma(@PathVariable Integer idPrograma) {
         programaService.eliminarPrograma(idPrograma);
     }
+
+    @PostMapping("/crearProgramasMasivo")
+    @Operation(summary = "Crear programas masivamente", description = "Método usado para crear múltiples programas desde un archivo")
+    public ResponseEntity<List<Programa>> crearProgramasMasivo(@RequestBody List<Programa> programas) {
+        return ResponseEntity.ok(programaService.crearProgramasMasivo(programas));
+    }
 }

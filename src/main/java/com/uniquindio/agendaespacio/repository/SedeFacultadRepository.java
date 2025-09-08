@@ -14,4 +14,5 @@ public interface SedeFacultadRepository extends JpaRepository<SedeFacultad, Inte
 
     List<SedeFacultad> findBySede(Sede sede);
     Optional<SedeFacultad> findByFacultad(Facultad facultad);
+    Optional<SedeFacultad> findBySedeAndFacultad(Sede sede, Facultad facultad);
 }

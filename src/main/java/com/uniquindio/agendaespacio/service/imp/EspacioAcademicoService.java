@@ -99,4 +99,37 @@ public class EspacioAcademicoService implements IEspacioAcademicoService {
         log.info(Constants.MSN_FIN_LOG_INFO+classLog+"eliminarEspacioAcademico");
 
     }
+
+    @Override
+    public List<EspacioAcademico> crearEspaciosAcademicosMasivo(List<EspacioAcademico> espaciosAcademicos) {
+        log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearEspaciosAcademicosMasivo");
+        
+        List<EspacioAcademico> espaciosAcademicosCreados = new java.util.ArrayList<>();
+        
+        for (EspacioAcademico espacioAcademico : espaciosAcademicos) {
+            try {
+                // Verificar si el espacio académico ya existe por nombre
+                if (Validation.isNullOrEmpty(espacioAcademicoRepository.findByNombreIgnoreCase(espacioAcademico.getNombre()))) {
+                    espacioAcademico.setNombre(espacioAcademico.getNombre());
+                    espacioAcademico.setDescripcion(espacioAcademico.getDescripcion());
+                    espacioAcademico.setFechaCreacion(new Date());
+                    espacioAcademico.setIdUsuarioCreacion(espacioAcademico.getIdUsuarioCreacion());
+                    EspacioAcademico newEspacioAcademico = espacioAcademicoRepository.save(espacioAcademico);
+                    
+                    if (!Validation.isNullOrEmpty(newEspacioAcademico)) {
+                        espaciosAcademicosCreados.add(newEspacioAcademico);
+                    }
+                } else {
+                    log.warn("El espacio académico con nombre '{}' ya existe, se omite", espacioAcademico.getNombre());
+                }
+            } catch (Exception e) {
+                log.error("Error al crear el espacio académico '{}': {}", espacioAcademico.getNombre(), e.getMessage());
+            }
+        }
+        
+        log.info(Constants.MSN_FIN_LOG_INFO + classLog + "crearEspaciosAcademicosMasivo - Se crearon {} de {} espacios académicos", 
+                espaciosAcademicosCreados.size(), espaciosAcademicos.size());
+        
+        return espaciosAcademicosCreados;
+    }
 }

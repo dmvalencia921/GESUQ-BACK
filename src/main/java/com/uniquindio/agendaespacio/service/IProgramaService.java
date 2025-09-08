@@ -10,4 +10,5 @@ public interface IProgramaService {
     Programa actualizarPrograma(Programa programa);
     List<Programa> listarProgramas();
     void eliminarPrograma(Integer idPrograma);
+    List<Programa> crearProgramasMasivo(List<Programa> programas);
 }

@@ -39,4 +39,10 @@ public class EspacioAcademicoRestController {
     public void eliminarEspacioAcademico( @PathVariable Integer idEspacioAcademico ) {
         espacioAcademicoService.eliminarEspacioAcademico(idEspacioAcademico);
     }
+
+    @PostMapping("/crearEspaciosAcademicosMasivo")
+    @Operation(summary = "Crear espacios académicos masivamente", description = "Método usado para crear múltiples espacios académicos desde un archivo")
+    public ResponseEntity<List<EspacioAcademico>> crearEspaciosAcademicosMasivo(@RequestBody List<EspacioAcademico> espaciosAcademicos) {
+        return ResponseEntity.ok(espacioAcademicoService.crearEspaciosAcademicosMasivo(espaciosAcademicos));
+    }
 }

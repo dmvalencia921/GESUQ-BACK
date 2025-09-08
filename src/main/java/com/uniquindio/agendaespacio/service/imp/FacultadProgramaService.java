@@ -103,4 +103,44 @@ public class FacultadProgramaService implements IFacultadProgramaService {
         facultadProgramaRespository.deleteById(idFacultadPrograma);
         log.info(Constants.MSN_FIN_LOG_INFO + classLog + "eliminarFaculPrograma");
     }
+
+    @Override
+    public List<FacultadPrograma> crearFacultadProgramasMasivo(List<FacultadPrograma> facultadProgramas) {
+        log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearFacultadProgramasMasivo");
+        
+        List<FacultadPrograma> facultadProgramasCreados = new java.util.ArrayList<>();
+        
+        for (FacultadPrograma facultadPrograma : facultadProgramas) {
+            try {
+                // Verificar si la relación ya existe
+                if (facultadPrograma.getFacultad() != null && facultadPrograma.getPrograma() != null) {
+                    // Verificar si ya existe esta combinación facultad-programa
+                    Optional<FacultadPrograma> existente = facultadProgramaRespository.findByPrograma(facultadPrograma.getPrograma());
+                    
+                    if (existente.isEmpty()) {
+                        facultadPrograma.setFechaCreacion(new Date());
+                        facultadPrograma.setIdUsuarioCreacion(facultadPrograma.getIdUsuarioCreacion());
+                        FacultadPrograma newFacultadPrograma = facultadProgramaRespository.save(facultadPrograma);
+                        
+                        if (!Validation.isNullOrEmpty(newFacultadPrograma)) {
+                            facultadProgramasCreados.add(newFacultadPrograma);
+                        }
+                    } else {
+                        log.warn("La relación facultad '{}' - programa '{}' ya existe, se omite", 
+                                facultadPrograma.getFacultad().getNombreFacultad(), 
+                                facultadPrograma.getPrograma().getNombre());
+                    }
+                } else {
+                    log.warn("Facultad o programa nulo en el registro, se omite");
+                }
+            } catch (Exception e) {
+                log.error("Error al crear la relación facultad-programa: {}", e.getMessage());
+            }
+        }
+        
+        log.info(Constants.MSN_FIN_LOG_INFO + classLog + "crearFacultadProgramasMasivo - Se crearon {} de {} relaciones", 
+                facultadProgramasCreados.size(), facultadProgramas.size());
+        
+        return facultadProgramasCreados;
+    }
 }

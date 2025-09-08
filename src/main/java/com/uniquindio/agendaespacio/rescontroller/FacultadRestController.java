@@ -39,4 +39,10 @@ public class FacultadRestController {
     public void EliminarFacultad(@PathVariable Integer idFacultad) {
         facultadService.eliminarFacultad(idFacultad);
     }
+
+    @PostMapping("/crearFacultadesMasivo")
+    @Operation(summary = "Crear facultades masivamente", description = "Método usado para crear múltiples facultades desde un archivo")
+    public ResponseEntity<List<Facultad>> crearFacultadesMasivo(@RequestBody List<Facultad> facultades) {
+        return ResponseEntity.ok(facultadService.crearFacultadesMasivo(facultades));
+    }
 }

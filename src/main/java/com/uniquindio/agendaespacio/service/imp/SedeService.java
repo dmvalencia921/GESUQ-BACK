@@ -94,4 +94,36 @@ public class SedeService implements ISedeService {
         log.info(Constants.MSN_FIN_LOG_INFO+classLog+"eliminarFacultad");
     }
 
+    @Override
+    public List<Sede> crearSedesMasivo(List<Sede> sedes) {
+        log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearSedesMasivo");
+        
+        List<Sede> sedesCreadas = new java.util.ArrayList<>();
+        
+        for (Sede sede : sedes) {
+            try {
+                // Verificar si la sede ya existe
+                if (Validation.isNullOrEmpty(sedeRepository.findByNombreSedeIgnoreCase(sede.getNombreSede()))) {
+                    sede.setNombreSede(sede.getNombreSede());
+                    sede.setUbicacion(sede.getUbicacion());
+                    Sede newSede = sedeRepository.save(sede);
+                    
+                    if (!Validation.isNullOrEmpty(newSede)) {
+                        sedesCreadas.add(newSede);
+                    }
+                } else {
+                    log.warn("La sede con nombre '{}' ya existe, se omite", sede.getNombreSede());
+                }
+            } catch (Exception e) {
+                log.error("Error al crear la sede '{}': {}", sede.getNombreSede(), e.getMessage());
+
+            }
+        }
+        
+        log.info(Constants.MSN_FIN_LOG_INFO + classLog + "crearSedesMasivo - Se crearon {} de {} sedes", 
+                sedesCreadas.size(), sedes.size());
+        
+        return sedesCreadas;
+    }
+
 }

@@ -9,4 +9,5 @@ public interface IFacultadService {
     Facultad actualizarFacultad(Facultad facultad);
     List<Facultad> listarFacultads();
     void eliminarFacultad(Integer idFacultad);
+    List<Facultad> crearFacultadesMasivo(List<Facultad> facultades);
 }

@@ -2,7 +2,6 @@ package com.uniquindio.agendaespacio.rescontroller;
 
 import com.uniquindio.agendaespacio.entity.EspacioAcademico;
 import com.uniquindio.agendaespacio.entity.EspacioPrograma;
-import com.uniquindio.agendaespacio.entity.FacultadPrograma;
 import com.uniquindio.agendaespacio.entity.Programa;
 import com.uniquindio.agendaespacio.service.imp.EspacioProgramaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/espacioPrograma")
-public class espacioProgramaRestController {
+public class EspacioProgramaRestController {
 
     @Autowired
     private EspacioProgramaService espacioProgramaService;

@@ -13,4 +13,5 @@ public interface IFacultadProgramaService {
     List<FacultadPrograma> listarFacultadProgramaPorFacultad(Facultad facultad);
     void eliminarFacultadPrograma(Programa programa);
     void eliminarFaculPrograma(Integer idFacultadPrograma);
+    List<FacultadPrograma> crearFacultadProgramasMasivo(List<FacultadPrograma> facultadProgramas);
 }

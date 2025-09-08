@@ -43,4 +43,10 @@ public class SedeFacultadRescontroller {
         facultad.setIdFacultad(idFacultad);
         sedeFacultadService.elminarSedeFacultadPorFacultad(facultad);
     }
+
+    @PostMapping("/crearSedeFacultadesMasivo")
+    @Operation(summary = "Crear relaciones sede-facultad masivamente", description = "Método usado para crear múltiples relaciones sede-facultad desde un archivo")
+    public ResponseEntity<List<SedeFacultad>> crearSedeFacultadesMasivo(@RequestBody List<SedeFacultad> sedeFacultades) {
+        return ResponseEntity.ok(sedeFacultadService.crearSedeFacultadesMasivo(sedeFacultades));
+    }
 }

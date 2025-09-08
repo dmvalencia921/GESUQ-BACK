@@ -10,6 +10,7 @@ public interface ISedeService {
     Sede actualizarSede(Sede sede);
     List<Sede> listarSedes();
     void eliminarSede(Integer idSede);
+    List<Sede> crearSedesMasivo(List<Sede> sedes);
 
 
 }

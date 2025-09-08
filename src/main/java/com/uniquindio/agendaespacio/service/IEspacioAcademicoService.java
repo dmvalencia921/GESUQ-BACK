@@ -9,4 +9,5 @@ public interface IEspacioAcademicoService {
     EspacioAcademico actualizarEspacioAcademico(EspacioAcademico espacio);
     List<EspacioAcademico> listarEspacioAcademicos();
     void eliminarEspacioAcademico(Integer idEspacioAcademico);
+    List<EspacioAcademico> crearEspaciosAcademicosMasivo(List<EspacioAcademico> espaciosAcademicos);
 }

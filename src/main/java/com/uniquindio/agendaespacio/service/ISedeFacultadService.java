@@ -10,4 +10,5 @@ public interface ISedeFacultadService {
     List<SedeFacultad> listarSedeFacultad();
     void elminarSedeFacultad(Integer idSedeFacultad );
     void elminarSedeFacultadPorFacultad(Facultad facultad );
+    List<SedeFacultad> crearSedeFacultadesMasivo(List<SedeFacultad> sedeFacultades);
 }

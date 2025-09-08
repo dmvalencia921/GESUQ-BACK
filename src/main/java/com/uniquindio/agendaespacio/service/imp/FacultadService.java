@@ -93,4 +93,36 @@ public class FacultadService implements IFacultadService {
         log.info(Constants.MSN_FIN_LOG_INFO+classLog+"eliminarFacultad");
 
     }
+
+    @Override
+    public List<Facultad> crearFacultadesMasivo(List<Facultad> facultades) {
+        log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearFacultadesMasivo");
+        
+        List<Facultad> facultadesCreadas = new java.util.ArrayList<>();
+        
+        for (Facultad facultad : facultades) {
+            try {
+                // Verificar si la facultad ya existe
+                if (Validation.isNullOrEmpty(facultadRepository.findByNombreFacultadIgnoreCase(facultad.getNombreFacultad()))) {
+                    facultad.setNombreFacultad(facultad.getNombreFacultad());
+                    facultad.setFechaCreacion(new Date());
+                    facultad.setIdUsuarioCreacion(facultad.getIdUsuarioCreacion());
+                    Facultad newFacultad = facultadRepository.save(facultad);
+                    
+                    if (!Validation.isNullOrEmpty(newFacultad)) {
+                        facultadesCreadas.add(newFacultad);
+                    }
+                } else {
+                    log.warn("La facultad con nombre '{}' ya existe, se omite", facultad.getNombreFacultad());
+                }
+            } catch (Exception e) {
+                log.error("Error al crear la facultad '{}': {}", facultad.getNombreFacultad(), e.getMessage());
+            }
+        }
+        
+        log.info(Constants.MSN_FIN_LOG_INFO + classLog + "crearFacultadesMasivo - Se crearon {} de {} facultades", 
+                facultadesCreadas.size(), facultades.size());
+        
+        return facultadesCreadas;
+    }
 }

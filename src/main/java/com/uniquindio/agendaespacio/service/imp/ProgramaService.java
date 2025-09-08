@@ -97,4 +97,37 @@ public class ProgramaService implements IProgramaService {
         programaRepository.deleteById(idPrograma);
         log.info(Constants.MSN_FIN_LOG_INFO+classLog+"Elimina programa");
     }
+
+    @Override
+    public List<Programa> crearProgramasMasivo(List<Programa> programas) {
+        log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearProgramasMasivo");
+        
+        List<Programa> programasCreados = new java.util.ArrayList<>();
+        
+        for (Programa programa : programas) {
+            try {
+                // Verificar si el programa ya existe por nombre
+                if (Validation.isNullOrEmpty(programaRepository.findByNombreIgnoreCase(programa.getNombre()))) {
+                    programa.setNombre(programa.getNombre());
+                    programa.setCodPrograma(programa.getCodPrograma());
+                    programa.setFechaCreacion(new Date());
+                    programa.setIdUsuarioCreacion(programa.getIdUsuarioCreacion());
+                    Programa newPrograma = programaRepository.save(programa);
+                    
+                    if (!Validation.isNullOrEmpty(newPrograma)) {
+                        programasCreados.add(newPrograma);
+                    }
+                } else {
+                    log.warn("El programa con nombre '{}' ya existe, se omite", programa.getNombre());
+                }
+            } catch (Exception e) {
+                log.error("Error al crear el programa '{}': {}", programa.getNombre(), e.getMessage());
+            }
+        }
+        
+        log.info(Constants.MSN_FIN_LOG_INFO + classLog + "crearProgramasMasivo - Se crearon {} de {} programas", 
+                programasCreados.size(), programas.size());
+        
+        return programasCreados;
+    }
 }

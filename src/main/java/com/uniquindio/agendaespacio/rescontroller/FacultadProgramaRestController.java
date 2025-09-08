@@ -51,4 +51,10 @@ public class FacultadProgramaRestController {
     public void eliminarFacultadPrograma(@PathVariable Integer idFacultadPrograma) {
         facultadProgramaService.eliminarFaculPrograma(idFacultadPrograma);
     }
+
+    @PostMapping("/crearFacultadProgramasMasivo")
+    @Operation(summary = "Crear relaciones facultad-programa masivamente", description = "Método usado para crear múltiples relaciones facultad-programa desde un archivo")
+    public ResponseEntity<List<FacultadPrograma>> crearFacultadProgramasMasivo(@RequestBody List<FacultadPrograma> facultadProgramas) {
+        return ResponseEntity.ok(facultadProgramaService.crearFacultadProgramasMasivo(facultadProgramas));
+    }
 }

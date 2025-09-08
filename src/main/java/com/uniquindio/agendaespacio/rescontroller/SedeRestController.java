@@ -43,4 +43,10 @@ public class SedeRestController {
         sedeService.eliminarSede(idSede);
     }
 
+    @PostMapping("/crearSedesMasivo")
+    @Operation(summary = "Crear sedes masivamente", description = "Método usado para crear múltiples sedes desde un archivo")
+    public ResponseEntity<List<Sede>> crearSedesMasivo(@RequestBody List<Sede> sedes) {
+        return ResponseEntity.ok(sedeService.crearSedesMasivo(sedes));
+    }
+
 }
