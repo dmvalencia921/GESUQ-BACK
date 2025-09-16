@@ -53,6 +53,12 @@ public class EspacioProgramaRestController {
         espacioProgramaService.eliminarEspaPrograma(idEspacioPrograma);
     }
 
+    @PostMapping("/crearEspacioProgramasMasivo")
+    @Operation(summary = "crear espacio programas masivo", description = "Metodo usado para la creacion masiva de espacio programas")
+    public ResponseEntity<List<EspacioPrograma>> crearEspacioProgramasMasivo(@RequestBody List<EspacioPrograma> espacioProgramas) {
+        return ResponseEntity.ok(espacioProgramaService.crearEspacioProgramasMasivo(espacioProgramas));
+    }
+
 
 
 

@@ -179,4 +179,64 @@ public class EspacioProgramaService implements IEspacioProgramaService {
         espacioProgramaRepository.deleteById(idEspacioPrograma);
         log.info(Constants.MSN_FIN_LOG_INFO + classLog + "eliminarFaculPrograma");
     }
+
+    @Override
+    public List<EspacioPrograma> crearEspacioProgramasMasivo(List<EspacioPrograma> espacioProgramas) {
+        log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearEspacioProgramasMasivo");
+        log.info("=== DEBUG BACKEND ===");
+        log.info("Lista recibida: {}", espacioProgramas);
+        log.info("Tamaño de la lista: {}", espacioProgramas.size());
+
+        if (espacioProgramas.isEmpty()) {
+            log.warn("La lista de espacio-programas está vacía, no se realizará ninguna operación.");
+            return new ArrayList<>();
+        }
+
+        List<EspacioPrograma> nuevosRegistros = new ArrayList<>();
+
+        for (EspacioPrograma ep : espacioProgramas) {
+            log.info("Procesando registro: {}", ep);
+            
+            if (ep.getEspacioAcademico() == null || ep.getPrograma() == null) {
+                log.warn("Registro con espacio o programa nulo, se omite: {}", ep);
+                continue;
+            }
+
+            Integer idEspacio = ep.getEspacioAcademico().getIdEspacioAcademico();
+            Integer idPrograma = ep.getPrograma().getIdPrograma();
+            
+            log.info("ID Espacio: {}, ID Programa: {}", idEspacio, idPrograma);
+
+            // Obtener espacio y programa persistidos
+            EspacioAcademico espacio = espacioAcademicoRepository.findById(idEspacio)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Espacio no encontrado: " + idEspacio));
+
+            Programa programa = programaRepository.findById(idPrograma)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Programa no encontrado: " + idPrograma));
+
+            // Verificar si ya existe la combinación
+            boolean existentes = espacioProgramaRepository.existsByEspacioAcademicoAndPrograma(espacio, programa);
+            if (existentes) {
+                log.info("Ya existe el espacio-programa con Espacio {} y Programa {}, se omite", idEspacio, idPrograma);
+                continue;
+            }
+
+            // Crear nuevo registro
+            EspacioPrograma nuevoEspacioPrograma = new EspacioPrograma();
+            nuevoEspacioPrograma.setEspacioAcademico(espacio);
+            nuevoEspacioPrograma.setPrograma(programa);
+            nuevoEspacioPrograma.setIdUsuarioCreacion(ep.getIdUsuarioCreacion());
+            nuevoEspacioPrograma.setFechaCreacion(new Date());
+
+            nuevosRegistros.add(nuevoEspacioPrograma);
+        }
+
+        List<EspacioPrograma> guardados = espacioProgramaRepository.saveAll(nuevosRegistros);
+        log.info("EspacioProgramas guardados: {}", guardados.size());
+        log.info(Constants.MSN_FIN_LOG_INFO + classLog + "crearEspacioProgramasMasivo - Registros guardados: " + guardados.size());
+
+        return guardados;
+    }
 }
