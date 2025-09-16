@@ -15,5 +15,6 @@ public interface IEspacioProgramaService {
     List<EspacioPrograma> listarEspacioProgramaPorPrograma(Programa programa);
     void eliminarEspacioPrograma(EspacioAcademico espacioAcademico);
     void eliminarEspaPrograma(Integer idEspacioPrograma);
+    List<EspacioPrograma> crearEspacioProgramasMasivo(List<EspacioPrograma> espacioProgramas);
 
 }
