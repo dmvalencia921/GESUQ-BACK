@@ -1,9 +1,9 @@
 package com.uniquindio.agendaespacio.service.imp;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.uniquindio.agendaespacio.entity.EspacioPrograma;
-import com.uniquindio.agendaespacio.entity.Grupo;
+import com.uniquindio.agendaespacio.entity.FacultadPrograma;
 import com.uniquindio.agendaespacio.entity.GrupoRelacion;
 import com.uniquindio.agendaespacio.repository.GrupoRelacionRepository;
 import com.uniquindio.agendaespacio.service.IGrupoRelacionService;
@@ -107,6 +107,54 @@ public class GrupoRelacionService implements IGrupoRelacionService {
         grupoRelacionRepository.deleteById(idGrupoRelacion);
     }
 
+    @Override
+    public List<GrupoRelacion> crearGrupoRelacionMasivo(List<GrupoRelacion> gruposRelacion) {
+       log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearFacultadProgramasMasivo");
+        
+        List<GrupoRelacion> grupoRelacionCreados = new java.util.ArrayList<>();
+        
+        for (GrupoRelacion grupoRelacion : gruposRelacion) {
+            try {
+                // Verificar si la relación ya existe
+                if (grupoRelacion.getSede() != null && grupoRelacion.getFacultad() != null && grupoRelacion.getEspacioPrograma().getEspacioAcademico() != null
+                && grupoRelacion.getEspacioPrograma().getPrograma() != null
+                )
+                 {
+                    // Verificar si ya existe esta combinación facultad-programa
+                    Optional<GrupoRelacion> existente = grupoRelacionRepository.findByFacultad(grupoRelacion.getFacultad());
+
+                    if (existente.isEmpty()) {
+                        grupoRelacion.setFechaCreacion(new Date());;
+                        grupoRelacion.setIdUsuarioCreacion(grupoRelacion.getIdUsuarioCreacion());
+                        GrupoRelacion newGrupoRelacion = grupoRelacionRepository.save(grupoRelacion);
+                        
+                        if (!Validation.isNullOrEmpty(newGrupoRelacion)) {
+                            grupoRelacionCreados.add(newGrupoRelacion);
+                        }
+                    } else {
+                        log.warn("La relación sede '{}' - facultad '{}'- programa '{}'- espacio '{}' ya existe, se omite",
+                                grupoRelacion.getSede().getNombreSede(),
+                                grupoRelacion.getFacultad().getNombreFacultad(),
+                                grupoRelacion.getEspacioPrograma().getPrograma().getNombre(),
+                                grupoRelacion.getEspacioPrograma().getEspacioAcademico().getNombre()
+                                );
+                    }
+                } else {
+                    log.warn("Facultad o programa nulo en el registro, se omite");
+                }
+            } catch (Exception e) {
+                log.error("Error al crear el Grupo Relacion: {}", e.getMessage());
+            }
+        }
+
+        log.info(Constants.MSN_FIN_LOG_INFO + classLog + "crearGrupoRelacionMasivo - Se crearon {} de {} relaciones",
+                grupoRelacionCreados.size(), gruposRelacion.size());
+
+        return grupoRelacionCreados;
+    }
+
+    }
+
     /*
      * @Override
      * public void eliminarGrupoRelacionporGrupo(Grupo grupo) {
@@ -126,4 +174,3 @@ public class GrupoRelacionService implements IGrupoRelacionService {
      * }
      */
 
-}
