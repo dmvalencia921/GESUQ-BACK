@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.uniquindio.agendaespacio.entity.Grupo;
+
 import com.uniquindio.agendaespacio.entity.GrupoRelacion;
 import com.uniquindio.agendaespacio.service.imp.GrupoRelacionService;
 
@@ -37,12 +37,22 @@ public class GrupoRelacionRestController {
         grupoRelacionService.eliminarGrupoRelacion(idGrupoRelacion);
     }
 
-/*     @DeleteMapping("/eliminarGrupoRelacionporGrupo/{idGrupo}")
-    @Operation(summary = "Eliminar por grupo", description = "Metodo que permite eliminar un grupo relacion por grupo")
-    public void eliminarGrupoRelacionporGrupo(@PathVariable Integer idGrupo) {
-        Grupo grupo = new Grupo();
-        grupo.setIdGrupo(idGrupo);
-        grupoRelacionService.eliminarGrupoRelacionporGrupo(grupo);
-    } */
+    @PostMapping("/crearGrupoRelacionMasivo")
+    @Operation(summary = "Crear relaciones grupoRelacion masivamente", description = "Método usado para crear múltiples relaciones grupoRelacion desde un archivo")
+    public ResponseEntity<List<GrupoRelacion>> crearGrupoRelacionMasivo(@RequestBody List<GrupoRelacion> grupoRelacion) {
+        return ResponseEntity.ok(grupoRelacionService.crearGrupoRelacionMasivo(grupoRelacion));
+    }
+
+    /*
+     * @DeleteMapping("/eliminarGrupoRelacionporGrupo/{idGrupo}")
+     * 
+     * @Operation(summary = "Eliminar por grupo", description =
+     * "Metodo que permite eliminar un grupo relacion por grupo")
+     * public void eliminarGrupoRelacionporGrupo(@PathVariable Integer idGrupo) {
+     * Grupo grupo = new Grupo();
+     * grupo.setIdGrupo(idGrupo);
+     * grupoRelacionService.eliminarGrupoRelacionporGrupo(grupo);
+     * }
+     */
 
 }

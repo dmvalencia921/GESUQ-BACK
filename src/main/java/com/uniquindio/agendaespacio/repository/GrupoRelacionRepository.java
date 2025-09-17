@@ -33,4 +33,6 @@ public interface GrupoRelacionRepository extends JpaRepository<GrupoRelacion, In
     Optional<GrupoRelacion> findBySedeAndFacultadAndEspacioPrograma(Sede sede, Facultad facultad,
             EspacioPrograma espacioPrograma);
 
+        Optional<GrupoRelacion> findByFacultad(Facultad facultad);
+
 }

@@ -15,5 +15,7 @@ public interface EspacioProgramaRepository extends JpaRepository<EspacioPrograma
     boolean existsByEspacioAcademicoAndPrograma(EspacioAcademico espacio, Programa programa);
     List<EspacioPrograma> findByPrograma(Programa programa);
     Optional<EspacioPrograma>findByEspacioAcademico(EspacioAcademico espacio);
+    Optional<EspacioPrograma> findByEspacioAcademicoAndPrograma(EspacioAcademico espacio,Programa programa);
+
 
 }
