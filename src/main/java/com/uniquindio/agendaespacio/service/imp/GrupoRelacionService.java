@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.uniquindio.agendaespacio.entity.EspacioPrograma;
 import com.uniquindio.agendaespacio.entity.FacultadPrograma;
 import com.uniquindio.agendaespacio.entity.GrupoRelacion;
+import com.uniquindio.agendaespacio.repository.EspacioProgramaRepository;
 import com.uniquindio.agendaespacio.repository.GrupoRelacionRepository;
 import com.uniquindio.agendaespacio.service.IGrupoRelacionService;
 import com.uniquindio.agendaespacio.util.constants.Constants;
@@ -26,6 +27,9 @@ public class GrupoRelacionService implements IGrupoRelacionService {
 
     @Autowired
     private GrupoRelacionRepository grupoRelacionRepository;
+
+    @Autowired
+    private EspacioProgramaRepository espacioProgramaRepository;
 
     private final String classLog = getClass().getName() + '.';
 
@@ -107,7 +111,7 @@ public class GrupoRelacionService implements IGrupoRelacionService {
         grupoRelacionRepository.deleteById(idGrupoRelacion);
     }
 
-    @Override
+   /*  @Override
     public List<GrupoRelacion> crearGrupoRelacionMasivo(List<GrupoRelacion> gruposRelacion) {
        log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearFacultadProgramasMasivo");
         
@@ -151,7 +155,73 @@ public class GrupoRelacionService implements IGrupoRelacionService {
                 grupoRelacionCreados.size(), gruposRelacion.size());
 
         return grupoRelacionCreados;
+    } */
+   @Override
+public List<GrupoRelacion> crearGrupoRelacionMasivo(List<GrupoRelacion> gruposRelacion) {
+    log.info(Constants.MSN_INICIO_LOG_INFO + classLog + "crearGrupoRelacionMasivo");
+
+    List<GrupoRelacion> grupoRelacionCreados = new java.util.ArrayList<>();
+
+    for (GrupoRelacion grupoRelacion : gruposRelacion) {
+        try {
+            if (grupoRelacion.getSede() != null 
+                && grupoRelacion.getFacultad() != null 
+                && grupoRelacion.getEspacioPrograma() != null
+                && grupoRelacion.getEspacioPrograma().getEspacioAcademico() != null
+                && grupoRelacion.getEspacioPrograma().getPrograma() != null) {
+                
+                // ✅ Buscar el EspacioPrograma real en BD
+                Optional<EspacioPrograma> espacioProgramaOpt = espacioProgramaRepository
+                        .findByEspacioAcademicoAndPrograma(
+                            grupoRelacion.getEspacioPrograma().getEspacioAcademico(),
+                            grupoRelacion.getEspacioPrograma().getPrograma()
+                        );
+
+                if (espacioProgramaOpt.isEmpty()) {
+                    log.warn("No existe EspacioPrograma para programa '{}' y espacio '{}', se omite",
+                            grupoRelacion.getEspacioPrograma().getPrograma().getNombre(),
+                            grupoRelacion.getEspacioPrograma().getEspacioAcademico().getNombre());
+                    continue;
+                }
+
+                grupoRelacion.setEspacioPrograma(espacioProgramaOpt.get());
+
+                // ✅ Validar si ya existe el GrupoRelacion con sede, facultad y espacioPrograma
+                Optional<GrupoRelacion> existente = grupoRelacionRepository
+                        .findBySedeAndFacultadAndEspacioPrograma(
+                            grupoRelacion.getSede(),
+                            grupoRelacion.getFacultad(),
+                            grupoRelacion.getEspacioPrograma()
+                        );
+
+                if (existente.isEmpty()) {
+                    grupoRelacion.setFechaCreacion(new Date());
+                    grupoRelacion.setIdUsuarioCreacion(grupoRelacion.getIdUsuarioCreacion());
+
+                    GrupoRelacion newGrupoRelacion = grupoRelacionRepository.save(grupoRelacion);
+                    grupoRelacionCreados.add(newGrupoRelacion);
+
+                } else {
+                    log.warn("La relación sede '{}' - facultad '{}' - programa '{}' - espacio '{}' ya existe, se omite",
+                            grupoRelacion.getSede().getNombreSede(),
+                            grupoRelacion.getFacultad().getNombreFacultad(),
+                            grupoRelacion.getEspacioPrograma().getPrograma().getNombre(),
+                            grupoRelacion.getEspacioPrograma().getEspacioAcademico().getNombre());
+                }
+            } else {
+                log.warn("Algún dato nulo en el registro, se omite");
+            }
+        } catch (Exception e) {
+            log.error("Error al crear el Grupo Relacion: {}", e.getMessage());
+        }
     }
+
+    log.info(Constants.MSN_FIN_LOG_INFO + classLog + 
+        "crearGrupoRelacionMasivo - Se crearon {} de {} relaciones",
+        grupoRelacionCreados.size(), gruposRelacion.size());
+
+    return grupoRelacionCreados;
+}
 
     }
 
